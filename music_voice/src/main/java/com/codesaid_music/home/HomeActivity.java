@@ -3,14 +3,17 @@ package com.codesaid_music.home;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid_music.R;
 import com.codesaid_music.home.adapter.HomePagerAdapter;
 import com.codesaid_music.model.CHANNEL;
@@ -31,7 +34,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
  *
  * @author codesaid
  */
-public class HomeActivity extends FragmentActivity implements View.OnClickListener {
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     // 指定首页要出现的卡片
     protected static final CHANNEL[] CHANNELS = new
@@ -51,7 +54,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initView();
         initData();
 
@@ -80,6 +82,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         MagicIndicator magicIndicator = findViewById(R.id.magic_indicator);
         magicIndicator.setBackgroundColor(Color.WHITE);
         CommonNavigator commonNavigator = new CommonNavigator(this);
+        commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @SuppressWarnings("ConstantConditions")
             @Override
@@ -90,9 +93,9 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SimplePagerTitleView simplePagerTitleView = new
-                        SimplePagerTitleView(HomeActivity.this);
+                        SimplePagerTitleView(context);
                 simplePagerTitleView.setText(CHANNELS[index].getKey());
-                simplePagerTitleView.setTextSize(19);
+                simplePagerTitleView.setTextSize(20);
                 simplePagerTitleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#999999"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#333333"));
@@ -103,6 +106,11 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                     }
                 });
                 return simplePagerTitleView;
+            }
+
+            @Override
+            public float getTitleWeight(Context context, int index) {
+                return 1.0f;
             }
 
             @Override

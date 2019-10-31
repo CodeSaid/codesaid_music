@@ -8,9 +8,9 @@
     <!-- 存放主页显示内容 -->
     <RelativeLayout
         android:id="@+id/content_layout"
+        android:background="@color/color_white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_white">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/title_layout"

@@ -24,4 +24,24 @@ dependencies {
     implementation this.rootProject.depsLibs.appcompat
     implementation this.rootProject.depsLibs.magicindicator
     testImplementation 'junit:junit:4.12'
+    //基础UI库
+    implementation project(':lib_commin_ui')
+    //二维码扫描库
+    implementation project(':lib_qrcode')
+    //视频播放器组件
+    implementation project(':lib_video')
+    //音频播放器组
+    implementation project(':lib_audio')
+    //webview库
+    implementation project(':lib_webview')
+    //网络请求库
+    implementation project(':lib_network')
+    //app下载更新库
+    implementation project(':lib_update')
+    //分享库
+    implementation project(':lib_share')
+    //图片加载库
+    implementation project(':lib_image_loader')
+    //保活库
+    implementation project(':lib_pullalive')
 }
