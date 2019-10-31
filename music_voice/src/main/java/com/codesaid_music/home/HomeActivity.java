@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.codesaid_music.R;
+import com.codesaid_music.home.adapter.HomePagerAdapter;
 import com.codesaid_music.model.CHANNEL;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -32,19 +33,24 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
  */
 public class HomeActivity extends FragmentActivity implements View.OnClickListener {
 
-    public static final CHANNEL[] CHANNELS = new
+    // 指定首页要出现的卡片
+    protected static final CHANNEL[] CHANNELS = new
             CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};
 
+    /**
+     * View
+     */
     private DrawerLayout mDrawerLayout;
     private TextView mToggleView;
     private TextView mSearchView;
     private ViewPager mViewPager;
 
+    private HomePagerAdapter mHomePagerAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         initView();
         initData();
@@ -57,6 +63,9 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         mToggleView = findViewById(R.id.toggle_view);
         mSearchView = findViewById(R.id.search_view);
         mViewPager = findViewById(R.id.view_pager);
+
+        mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager(), CHANNELS);
+        mViewPager.setAdapter(mHomePagerAdapter);
 
         mToggleView.setOnClickListener(this);
         mSearchView.setOnClickListener(this);
@@ -82,6 +91,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SimplePagerTitleView simplePagerTitleView = new
                         SimplePagerTitleView(HomeActivity.this);
+                simplePagerTitleView.setText(CHANNELS[index].getKey());
                 simplePagerTitleView.setTextSize(19);
                 simplePagerTitleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#999999"));
