@@ -1,0 +1,115 @@
+package com.codesaid_music.home;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.TextView;
+
+import com.codesaid_music.R;
+import com.codesaid_music.model.CHANNEL;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+/**
+ * Created By codesaid
+ * On :2019-10-31
+ * Package Name: com.codesaid_music
+ * desc: 首页
+ *
+ * @author codesaid
+ */
+public class HomeActivity extends FragmentActivity implements View.OnClickListener {
+
+    public static final CHANNEL[] CHANNELS = new
+            CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};
+
+    private DrawerLayout mDrawerLayout;
+    private TextView mToggleView;
+    private TextView mSearchView;
+    private ViewPager mViewPager;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        initView();
+        initData();
+
+
+    }
+
+    private void initView() {
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mToggleView = findViewById(R.id.toggle_view);
+        mSearchView = findViewById(R.id.search_view);
+        mViewPager = findViewById(R.id.view_pager);
+
+        mToggleView.setOnClickListener(this);
+        mSearchView.setOnClickListener(this);
+
+        initMagicIndicator();
+    }
+
+    /**
+     * 初始化 ViewPager 的指示器
+     */
+    private void initMagicIndicator() {
+        MagicIndicator magicIndicator = findViewById(R.id.magic_indicator);
+        magicIndicator.setBackgroundColor(Color.WHITE);
+        CommonNavigator commonNavigator = new CommonNavigator(this);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            @SuppressWarnings("ConstantConditions")
+            @Override
+            public int getCount() {
+                return CHANNELS == null ? 0 : CHANNELS.length;
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                SimplePagerTitleView simplePagerTitleView = new
+                        SimplePagerTitleView(HomeActivity.this);
+                simplePagerTitleView.setTextSize(19);
+                simplePagerTitleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                simplePagerTitleView.setNormalColor(Color.parseColor("#999999"));
+                simplePagerTitleView.setSelectedColor(Color.parseColor("#333333"));
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewPager.setCurrentItem(index);
+                    }
+                });
+                return simplePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                return null;
+            }
+        });
+        magicIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(magicIndicator, mViewPager);
+    }
+
+    private void initData() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+}
