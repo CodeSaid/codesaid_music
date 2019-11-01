@@ -14,6 +14,7 @@ import okhttp3.RequestBody;
  * Created By codesaid
  * On :2019-11-01
  * Package Name: com.codesaid.lib_network.okhttp.request
+ * desc: 封装 get/post 文件上传请求对象
  */
 public class CommonRequest {
 

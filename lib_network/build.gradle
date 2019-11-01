@@ -28,4 +28,6 @@ dependencies {
 
     // okhttp 依赖
     api this.rootProject.depsLibs.okhttp
+    // Gson
+    api this.rootProject.depsLibs.gson
 }
