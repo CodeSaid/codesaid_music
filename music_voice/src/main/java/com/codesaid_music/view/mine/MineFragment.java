@@ -1,4 +1,4 @@
-package com.codesaid_music.mine;
+package com.codesaid_music.view.mine;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,7 +15,7 @@ import com.codesaid_music.R;
 /**
  * Created By codesaid
  * On :2019-10-31
- * Package Name: com.codesaid_music.mine
+ * Package Name: com.codesaid_music.view.mine
  */
 public class MineFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.codesaid_music.discory;
+package com.codesaid_music.view.discory;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

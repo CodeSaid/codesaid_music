@@ -1,19 +1,19 @@
-package com.codesaid_music.home.adapter;
+package com.codesaid_music.view.home.adapter;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.codesaid_music.discory.DiscoryFragment;
-import com.codesaid_music.friend.FriendFragment;
-import com.codesaid_music.mine.MineFragment;
+import com.codesaid_music.view.discory.DiscoryFragment;
+import com.codesaid_music.view.friend.FriendFragment;
+import com.codesaid_music.view.mine.MineFragment;
 import com.codesaid_music.model.CHANNEL;
 
 /**
  * Created By codesaid
  * On :2019-10-31
- * Package Name: com.codesaid_music.home.adapter
+ * Package Name: com.codesaid_music.view.home.adapter
  * desc: 首页HomeActivity 的 Adapter
  */
 public class HomePagerAdapter extends FragmentPagerAdapter {

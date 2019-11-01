@@ -1,21 +1,18 @@
-package com.codesaid_music.home;
+package com.codesaid_music.view.home;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid_music.R;
-import com.codesaid_music.home.adapter.HomePagerAdapter;
+import com.codesaid_music.view.home.adapter.HomePagerAdapter;
 import com.codesaid_music.model.CHANNEL;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;

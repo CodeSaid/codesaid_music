@@ -1,4 +1,4 @@
-package com.codesaid_music.friend;
+package com.codesaid_music.view.friend;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.codesaid_music.R;
-import com.codesaid_music.mine.MineFragment;
 
 /**
  * Created By codesaid
  * On :2019-10-31
- * Package Name: com.codesaid_music.friend
+ * Package Name: com.codesaid_music.view.friend
  */
 public class FriendFragment extends Fragment {
 
