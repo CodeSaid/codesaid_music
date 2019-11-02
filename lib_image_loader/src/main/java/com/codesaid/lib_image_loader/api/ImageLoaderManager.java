@@ -1,6 +1,9 @@
 package com.codesaid.lib_image_loader.api;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -8,6 +11,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codesaid.lib_image_loader.R;
 
 /**
@@ -44,6 +48,28 @@ public class ImageLoaderManager {
                 .apply(initCommonRequestOption())
                 .transition(BitmapTransitionOptions.withCrossFade())
                 .into(imageView);
+    }
+
+    /**
+     * 为 ImageView 加载圆形图片
+     *
+     * @param imageView 需要加载图片的 ImageView
+     * @param url       地址
+     */
+    public void displayImageForCircle(final ImageView imageView, String url) {
+        Glide.with(imageView.getContext())
+                .asBitmap()
+                .load(url)
+                .apply(initCommonRequestOption())
+                .into(new BitmapImageViewTarget(imageView) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory
+                                .create(imageView.getResources(), resource);
+                        drawable.setCircular(true);
+                        imageView.setImageDrawable(drawable);
+                    }
+                });
     }
 
     @SuppressLint("CheckResult")
