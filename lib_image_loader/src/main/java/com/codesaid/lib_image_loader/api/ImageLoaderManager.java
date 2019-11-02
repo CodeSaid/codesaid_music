@@ -2,8 +2,14 @@ package com.codesaid.lib_image_loader.api;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -12,7 +18,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.codesaid.lib_image_loader.R;
+import com.codesaid.lib_image_loader.image.Utils;
+
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created By codesaid
@@ -68,6 +84,48 @@ public class ImageLoaderManager {
                                 .create(imageView.getResources(), resource);
                         drawable.setCircular(true);
                         imageView.setImageDrawable(drawable);
+                    }
+                });
+    }
+
+    /**
+     * 为 ViewGroup 加载图片设置为背景    并 判断是否需要模糊处理
+     *
+     * @param viewGroup 需要加载图片的 ViewGroup
+     * @param url       地址
+     * @param isBlur    是否需要模糊处理
+     */
+    public void displayImageForViewGroup(final ViewGroup viewGroup, String url, final boolean isBlur) {
+        Glide.with(viewGroup.getContext())
+                .asBitmap()
+                .load(url)
+                .apply(initCommonRequestOption())
+                .into(new SimpleTarget<Bitmap>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Observable.just(resource)
+                                .map(new Function<Bitmap, Drawable>() {
+                                    @Override
+                                    public Drawable apply(Bitmap bitmap) throws Exception {
+                                        Drawable drawable;
+                                        if (isBlur) { // 是否需要模糊处理
+                                            drawable = new BitmapDrawable(Utils
+                                                    .doBlur(bitmap, 100, true));
+                                        } else {
+                                            drawable = new BitmapDrawable(bitmap);
+                                        }
+
+                                        return drawable;
+                                    }
+                                }).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<Drawable>() {
+                                    @Override
+                                    public void accept(Drawable drawable) throws Exception {
+                                        viewGroup.setBackground(drawable);
+                                    }
+                                });
                     }
                 });
     }
