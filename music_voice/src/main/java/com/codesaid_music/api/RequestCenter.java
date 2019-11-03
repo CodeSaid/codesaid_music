@@ -5,6 +5,7 @@ import com.codesaid.lib_network.okhttp.listener.DisposeDataHandle;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
 import com.codesaid.lib_network.okhttp.request.CommonRequest;
 import com.codesaid.lib_network.okhttp.request.RequestParams;
+import com.codesaid_music.model.user.User;
 
 /**
  * Created By codesaid
@@ -48,6 +49,6 @@ public class RequestCenter {
         RequestParams params = new RequestParams();
         params.put("mb", "18734924592");
         params.put("pwd", "999999q");
-        RequestCenter.getRequest(HttpConstants.LOGIN, params, listener, null);
+        RequestCenter.getRequest(HttpConstants.LOGIN, params, listener, User.class);
     }
 }

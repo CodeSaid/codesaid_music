@@ -7,13 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid_music.R;
+import com.codesaid_music.utils.UserManager;
 import com.codesaid_music.view.home.adapter.HomePagerAdapter;
 import com.codesaid_music.model.CHANNEL;
+import com.codesaid_music.view.login.LoginActivity;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -45,6 +50,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private TextView mSearchView;
     private ViewPager mViewPager;
 
+    private LinearLayout mUnLoginLayout;
+    private ImageView mPhotoView;
+
     private HomePagerAdapter mHomePagerAdapter;
 
     @Override
@@ -70,6 +78,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mSearchView.setOnClickListener(this);
 
         initMagicIndicator();
+
+        // 登录相关的 UI
+        mUnLoginLayout = findViewById(R.id.unloggin_layout);
+        mUnLoginLayout.setOnClickListener(this);
+        mPhotoView = findViewById(R.id.avatr_view);
+
     }
 
     /**
@@ -125,6 +139,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.unloggin_layout:
+                // 判断当前是否已经登录
+                if (!UserManager.getInstance().hasLogined()) {
+                    // 未登录，直接跳转到登录页面
+                    LoginActivity.start(this);
+                } else {
+                    // 已经登录 关闭侧滑栏，并且刷新主页内容区
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                break;
+        }
     }
 }
