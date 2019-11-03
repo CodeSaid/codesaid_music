@@ -50,7 +50,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home_layout);
         initView();
         initData();
 

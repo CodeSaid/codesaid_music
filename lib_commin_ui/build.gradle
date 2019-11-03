@@ -24,5 +24,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation this.rootProject.depsLibs.appcompat
+    compileOnly this.rootProject.depsLibs.appcompat
+
+    compileOnly rootProject.depsLibs.recyclerview
+    //可以用arouter去掉此依赖
+    compileOnly project(':lib_image_loader')
+    api rootProject.depsLibs.magicindicator
 }
