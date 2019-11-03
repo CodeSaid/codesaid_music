@@ -1,5 +1,6 @@
 package com.codesaid_music.view.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codesaid.lib_commin_ui.base.BaseActivity;
+import com.codesaid.lib_image_loader.api.ImageLoaderManager;
 import com.codesaid_music.R;
+import com.codesaid_music.model.login.LoginEvent;
 import com.codesaid_music.utils.UserManager;
 import com.codesaid_music.view.home.adapter.HomePagerAdapter;
 import com.codesaid_music.model.CHANNEL;
@@ -27,6 +30,10 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created By codesaid
@@ -58,11 +65,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_home_layout);
         initView();
         initData();
-
-
     }
 
     private void initView() {
@@ -137,6 +143,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    @SuppressLint("RtlHardcoded")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -151,5 +159,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    /**
+     * 处理登陆事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginEvent event) {
+        mUnLoginLayout.setVisibility(View.GONE);
+        mPhotoView.setVisibility(View.VISIBLE);
+        ImageLoaderManager.getInstance()
+                .displayImageForCircle(mPhotoView, UserManager.getInstance().getUser().data.photoUrl);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
