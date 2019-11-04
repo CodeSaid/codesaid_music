@@ -45,14 +45,19 @@ public class SpreadView extends View {
         distance = a.getInt(R.styleable.SpreadView_spread_distance, distance);
         a.recycle();
 
+        // 创建中心画笔
         centerPaint = new Paint();
         centerPaint.setColor(centerColor);
+        // 开启抗锯齿
         centerPaint.setAntiAlias(true);
         //最开始不透明且扩散距离为0
         alphas.add(255);
         spreadRadius.add(0);
+
+        // 创建 扩散画笔
         spreadPaint = new Paint();
         spreadPaint.setAntiAlias(true);
+        // 空心圆
         spreadPaint.setStyle(Paint.Style.STROKE);
         spreadPaint.setAlpha(255);
         spreadPaint.setColor(spreadColor);
