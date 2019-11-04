@@ -40,6 +40,9 @@ public class CommonJsonCallback implements Callback {
     protected final int JSON_ERROR = -2; // the JSON relative error
     protected final int OTHER_ERROR = -3; // the unknow error
 
+    /**
+     * 将其它线程的数据转发到UI线程
+     */
     private Handler mDeliveryHandler;
     private DisposeDataListener mListener;
     private Class<?> mClass;

@@ -67,11 +67,13 @@ public class CommonRequest {
      * 对外创建 get 请求对象 , 无请求头
      *
      * @param url    地址
-     * @param params 请求参数
      * @return request 对象
      */
-    public static Request createGetRequest(String url, RequestParams params) {
-        return createGetRequest(url, params, null);
+    public static Request createGetRequest(String url) {
+        return new Request.Builder()
+                .url(url)
+                .get()
+                .build();
     }
 
     /**

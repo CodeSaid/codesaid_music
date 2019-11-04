@@ -169,7 +169,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mUnLoginLayout.setVisibility(View.GONE);
         mPhotoView.setVisibility(View.VISIBLE);
         ImageLoaderManager.getInstance()
-                .displayImageForCircle(mPhotoView, UserManager.getInstance().getUser().data.photoUrl);
+                .displayImageForCircle(mPhotoView, UserManager.getInstance().getUser().photoUrl);
     }
 
     @Override

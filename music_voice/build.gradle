@@ -25,6 +25,11 @@ dependencies {
     implementation this.rootProject.depsLibs.magicindicator
     implementation this.rootProject.depsLibs.eventbus
 
+    // okhttp 依赖
+    implementation this.rootProject.depsLibs.okhttp
+    // Gson
+    implementation this.rootProject.depsLibs.gson
+
     testImplementation 'junit:junit:4.12'
     //基础UI库
     implementation project(':lib_commin_ui')
