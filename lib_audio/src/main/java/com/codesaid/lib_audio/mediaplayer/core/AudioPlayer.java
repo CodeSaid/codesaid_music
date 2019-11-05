@@ -12,7 +12,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.codesaid.lib_audio.app.AudioHelper;
+import com.codesaid.lib_audio.mediaplayer.events.AudioCompleteEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioErrorEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioLoadEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioPauseEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioReleaseEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioStartEvent;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -86,8 +94,10 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
             mMediaPlayer.setDataSource(audioBean.mUrl);
             mMediaPlayer.prepareAsync();
             // TODO 对外发送 load 事件
+            EventBus.getDefault().post(new AudioLoadEvent(audioBean));
         } catch (Exception e) {
             // TODO 对外发送 error 事件
+            EventBus.getDefault().post(new AudioErrorEvent(0));
             e.printStackTrace();
         }
     }
@@ -105,6 +115,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
         mWifiLock.acquire();
 
         // TODO 对外发送 start 事件
+        EventBus.getDefault().post(new AudioStartEvent());
     }
 
     /**
@@ -125,6 +136,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
             }
 
             // TODO 发送暂停事件
+            EventBus.getDefault().post(new AudioPauseEvent());
         }
     }
 
@@ -155,6 +167,7 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
         }
 
         // TODO 发送 release 销毁事件
+        EventBus.getDefault().post(new AudioReleaseEvent());
     }
 
     /**
@@ -169,24 +182,41 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
         return CustomMediaPlayer.Status.STOPPED;
     }
 
+    /**
+     * 缓存进度回调
+     *
+     * @param mp
+     * @param percent
+     */
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
     }
 
+    /**
+     * 播放完成回调
+     *
+     * @param mp
+     */
     @Override
     public void onCompletion(MediaPlayer mp) {
-
+        EventBus.getDefault().post(new AudioCompleteEvent());
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        return false;
+        EventBus.getDefault().post(new AudioErrorEvent(0));
+        return true;
     }
 
+    /**
+     * 准备完毕
+     *
+     * @param mp
+     */
     @Override
     public void onPrepared(MediaPlayer mp) {
-
+        start();
     }
 
     /**
