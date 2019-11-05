@@ -36,6 +36,8 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
     // 音频焦点监听器
     private AudioFocusManager mAudioFocusManager;
 
+    private boolean isPauseByFocusLossTransient;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -187,23 +189,47 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
 
     }
 
+    /**
+     * 再次获得音频焦点
+     */
     @Override
     public void audioFocusGrant() {
-
+        setVolumn(1.0f, 1.0f);
+        if (isPauseByFocusLossTransient) {
+            resume();
+        }
+        isPauseByFocusLossTransient = false;
     }
 
+    private void setVolumn(float leftVol, float rightVol) {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setVolume(leftVol, rightVol);
+        }
+    }
+
+
+    /**
+     * 永久失去焦点
+     */
     @Override
     public void audioFocusLoss() {
-
+        pause();
     }
 
+    /**
+     * 短暂失去焦点
+     */
     @Override
     public void audioFocusLossTransient() {
-
+        pause();
+        isPauseByFocusLossTransient = true;
     }
 
+    /**
+     * 瞬间失去焦点
+     */
     @Override
     public void audioFocusLossDuck() {
-
+        setVolumn(0.5f, 0.5f);
     }
 }
