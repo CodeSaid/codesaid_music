@@ -184,7 +184,7 @@ public class AudioController {
      *
      * @return AudioBean
      */
-    private AudioBean getNowPlaying() {
+    public AudioBean getNowPlaying() {
         return getPlaying(mAudioBeanIndex);
     }
 
@@ -259,7 +259,7 @@ public class AudioController {
     /**
      * 播放下一首歌曲
      */
-    private void next() {
+    public void next() {
         AudioBean audioBean = getNextPlaying();
         mAudioPlayer.load(audioBean);
     }
