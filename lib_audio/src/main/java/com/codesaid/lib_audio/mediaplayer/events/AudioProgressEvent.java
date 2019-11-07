@@ -1,6 +1,7 @@
 package com.codesaid.lib_audio.mediaplayer.events;
 
-import com.imooc.lib_audio.mediaplayer.core.CustomMediaPlayer;
+
+import com.codesaid.lib_audio.mediaplayer.core.CustomMediaPlayer;
 
 public class AudioProgressEvent {
 

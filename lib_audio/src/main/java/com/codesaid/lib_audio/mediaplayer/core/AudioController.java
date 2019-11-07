@@ -1,9 +1,13 @@
 package com.codesaid.lib_audio.mediaplayer.core;
 
+import com.codesaid.lib_audio.mediaplayer.events.AudioCompleteEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioErrorEvent;
 import com.codesaid.lib_audio.mediaplayer.exception.AudioBeanEmptyException;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -225,7 +229,7 @@ public class AudioController {
     /**
      * 对外提供播放方法
      */
-    private void play() {
+    public void play() {
         AudioBean audioBean = getNowPlaying();
         mAudioPlayer.load(audioBean);
     }
@@ -271,7 +275,7 @@ public class AudioController {
     /**
      * 自动切换播放 / 暂停
      */
-    private void playOrPause() {
+    public void playOrPause() {
         if (isStartState()) {
             pause();
         } else if (isPauseStatus()) {
@@ -302,5 +306,18 @@ public class AudioController {
      */
     public boolean isPauseStatus() {
         return CustomMediaPlayer.Status.STOPPED == getStatus();
+    }
+
+    //插放完毕事件处理
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioCompleteEvent(
+            AudioCompleteEvent event) {
+        next();
+    }
+
+    //播放出错事件处理
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioErrorEvent(AudioErrorEvent event) {
+        next();
     }
 }

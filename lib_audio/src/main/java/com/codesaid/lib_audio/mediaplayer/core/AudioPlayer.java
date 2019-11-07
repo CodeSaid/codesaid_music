@@ -93,10 +93,8 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(audioBean.mUrl);
             mMediaPlayer.prepareAsync();
-            // TODO 对外发送 load 事件
             EventBus.getDefault().post(new AudioLoadEvent(audioBean));
         } catch (Exception e) {
-            // TODO 对外发送 error 事件
             EventBus.getDefault().post(new AudioErrorEvent(0));
             e.printStackTrace();
         }
@@ -114,7 +112,6 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
         mMediaPlayer.start();
         mWifiLock.acquire();
 
-        // TODO 对外发送 start 事件
         EventBus.getDefault().post(new AudioStartEvent());
     }
 
@@ -135,7 +132,6 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
                 mAudioFocusManager.abandonAudioFocus();
             }
 
-            // TODO 发送暂停事件
             EventBus.getDefault().post(new AudioPauseEvent());
         }
     }
@@ -166,7 +162,6 @@ public class AudioPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
             mWifiLock = null;
         }
 
-        // TODO 发送 release 销毁事件
         EventBus.getDefault().post(new AudioReleaseEvent());
     }
 

@@ -1,6 +1,7 @@
 package com.codesaid.lib_audio.mediaplayer.events;
 
-import com.imooc.lib_audio.mediaplayer.core.AudioController;
+
+import com.codesaid.lib_audio.mediaplayer.core.AudioController;
 
 /**
  * 播放模式切换事件
