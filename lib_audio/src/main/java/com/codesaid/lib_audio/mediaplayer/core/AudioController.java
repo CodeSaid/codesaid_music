@@ -6,6 +6,7 @@ import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created By codesaid
@@ -104,6 +105,55 @@ public class AudioController {
     }
 
     /**
+     * 添加歌曲到头部
+     *
+     * @param audioBean 歌曲 bean
+     */
+    public void addAudio(AudioBean audioBean) {
+        this.addAudio(0, audioBean);
+    }
+
+    /**
+     * 添加歌曲到指定位置
+     *
+     * @param index     索引
+     * @param audioBean 歌曲 bean
+     */
+    public void addAudio(int index, AudioBean audioBean) {
+        if (mAudioBeans == null) {
+            throw new AudioBeanEmptyException("当前播放队列为空，请先设置播放队列");
+        }
+        int query = queryAudio(audioBean);
+        if (query <= -1) {
+            // 没有添加过
+            addCustomAudio(index, audioBean);
+        } else {
+            AudioBean bean = getNowPlaying();
+            if (!bean.id.equals(audioBean.id)) {
+                // 已经在队列并且不在播放中
+                setAudioBeanIndex(query);
+            }
+        }
+    }
+
+    private void addCustomAudio(int index, AudioBean audioBean) {
+        if (mAudioBeans == null) {
+            throw new AudioBeanEmptyException("当前播放队列为空,请先设置播放队列.");
+        }
+        mAudioBeans.add(index, audioBean);
+    }
+
+    /**
+     * 查询歌曲是否在当前队列中
+     *
+     * @param audioBean AudioBean
+     * @return -1: 不存在
+     */
+    private int queryAudio(AudioBean audioBean) {
+        return mAudioBeans.indexOf(audioBean);
+    }
+
+    /**
      * 设置要播放的歌曲索引
      *
      * @param audioBeanIndex 歌曲索引
@@ -116,13 +166,22 @@ public class AudioController {
         play();
     }
 
+    public AudioBean getPlaying(int index) {
+        if (mAudioBeans != null && !mAudioBeans.isEmpty()
+                && index >= 0 && index < mAudioBeans.size()) {
+            return mAudioBeans.get(mAudioBeanIndex);
+        } else {
+            throw new AudioBeanEmptyException("当前播放队列为空，请先设置播放队列");
+        }
+    }
+
     /**
      * 获取当前正在播放的 歌曲
      *
      * @return AudioBean
      */
     private AudioBean getNowPlaying() {
-        return null;
+        return getPlaying(mAudioBeanIndex);
     }
 
     /**
@@ -131,6 +190,16 @@ public class AudioController {
      * @return AudioBean
      */
     private AudioBean getNextPlaying() {
+        switch (mPlayMode) {
+            case LOOP:
+                mAudioBeanIndex = (mAudioBeanIndex + mAudioBeans.size() - 1) % mAudioBeans.size();
+                return getPlaying(mAudioBeanIndex);
+            case RANDOM:
+                mAudioBeanIndex = new Random().nextInt(mAudioBeans.size()) % mAudioBeans.size();
+                return getPlaying(mAudioBeanIndex);
+            case REPEAT:
+                return getPlaying(mAudioBeanIndex);
+        }
         return null;
     }
 
@@ -140,6 +209,16 @@ public class AudioController {
      * @return AudioBean
      */
     private AudioBean getPreviousPlaying() {
+        switch (mPlayMode) {
+            case LOOP:
+                mAudioBeanIndex = (mAudioBeanIndex + mAudioBeans.size() - 1) % mAudioBeans.size();
+                return getPlaying(mAudioBeanIndex);
+            case RANDOM:
+                mAudioBeanIndex = new Random().nextInt(mAudioBeans.size()) % mAudioBeans.size();
+                return getPlaying(mAudioBeanIndex);
+            case REPEAT:
+                return getPlaying(mAudioBeanIndex);
+        }
         return null;
     }
 
