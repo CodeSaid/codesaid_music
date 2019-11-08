@@ -15,6 +15,7 @@ import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_audio.mediaplayer.core.AudioController;
 import com.codesaid.lib_audio.mediaplayer.core.MusicService;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
+import com.codesaid.lib_image_loader.api.ImageLoaderManager;
 
 /**
  * Created By codesaid
@@ -89,7 +90,7 @@ public class NotificationHelper {
                             .setContent(mSmallRemoteViews); //正常布局，两个布局可以切换
             mNotification = builder.build();
 
-            //            showLoadStatus(mAudioBean);
+            showLoadStatus(mAudioBean);
         }
     }
 
@@ -141,6 +142,74 @@ public class NotificationHelper {
         PendingIntent favoritePendingIntent = PendingIntent.getBroadcast(AudioHelper.getContext(),
                 4, favoriteIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.favourite_view, favoritePendingIntent);
+    }
+
+
+    /**
+     * 更新为加载状态
+     *
+     * @param bean AudioBean
+     */
+    public void showLoadStatus(AudioBean bean) {
+        if (mRemoteViews != null) {
+            mAudioBean = bean;
+
+            // 更新大布局
+            mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
+            mRemoteViews.setTextViewText(R.id.title_view, mAudioBean.name);
+            mRemoteViews.setTextViewText(R.id.tip_view, mAudioBean.album);
+
+            // 为 Notification 中的 ImageView 加载图片
+            ImageLoaderManager.getInstance()
+                    .displayImageForNotification(
+                            AudioHelper.getContext(),
+                            mRemoteViews,
+                            R.id.image_view,
+                            mNotification,
+                            NOTIFICATION_ID,
+                            bean.albumPic);
+
+            // 更新为收藏状态
+
+
+            // 更新小布局
+            mSmallRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
+            mSmallRemoteViews.setTextViewText(R.id.title_view, mAudioBean.name);
+            mSmallRemoteViews.setTextViewText(R.id.tip_view, mAudioBean.album);
+
+            // 为 Notification 中的 ImageView 加载图片
+            ImageLoaderManager.getInstance()
+                    .displayImageForNotification(
+                            AudioHelper.getContext(),
+                            mSmallRemoteViews,
+                            R.id.image_view,
+                            mNotification,
+                            NOTIFICATION_ID,
+                            bean.albumPic);
+        }
+        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+    }
+
+    /**
+     * 更新为播放状态
+     */
+    public void showPlayStatus() {
+        if (mRemoteViews != null) {
+            mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
+            mSmallRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
+            mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+        }
+    }
+
+    /**
+     * 更新为暂停状态
+     */
+    public void showPauseStatus() {
+        if (mRemoteViews != null) {
+            mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);
+            mSmallRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);
+            mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+        }
     }
 
     public static NotificationHelper getInstance() {
