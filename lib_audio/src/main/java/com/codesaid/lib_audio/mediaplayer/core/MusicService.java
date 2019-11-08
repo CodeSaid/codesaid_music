@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-
 import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_audio.mediaplayer.events.AudioFavouriteEvent;
 import com.codesaid.lib_audio.mediaplayer.events.AudioLoadEvent;
@@ -29,7 +28,8 @@ import static com.codesaid.lib_audio.mediaplayer.view.NotificationHelper.NOTIFIC
 
 
 /**
- * 音乐后台服务,并更新notification状态
+ * @author CodeSaid
+ * desc: 音乐后台服务,并更新notification状态
  */
 public class MusicService extends Service implements NotificationHelper.NotificationHelperListener {
 
@@ -100,7 +100,7 @@ public class MusicService extends Service implements NotificationHelper.Notifica
     @Override
     public void onNotificationInit() {
         //service与Notification绑定
-        //startForeground(NOTIFICATION_ID, NotificationHelper.getInstance().getNotification());
+        startForeground(NOTIFICATION_ID, NotificationHelper.getInstance().getNotification());
     }
 
     @Override
@@ -113,31 +113,31 @@ public class MusicService extends Service implements NotificationHelper.Notifica
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioLoadEvent(AudioLoadEvent event) {
         //更新notifacation为load状态
-        //        NotificationHelper.getInstance().showLoadStatus(event.mAudioBean);
+        NotificationHelper.getInstance().showLoadStatus(event.mAudioBean);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioPauseEvent(AudioPauseEvent event) {
         //更新notifacation为暂停状态
-        //        NotificationHelper.getInstance().showPauseStatus();
+        NotificationHelper.getInstance().showPauseStatus();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAudioStartEvent(AudioStartEvent event) {
         //更新notifacation为播放状态
-        //        NotificationHelper.getInstance().showPlayStatus();
+        NotificationHelper.getInstance().showPlayStatus();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioFavouriteEvent(AudioFavouriteEvent event) {
-        //更新notifacation收藏状态
-        //        NotificationHelper.getInstance().changeFavouriteStatus(event.isFavourite);
-    }
+    //    @Subscribe(threadMode = ThreadMode.MAIN)
+    //    public void onAudioFavouriteEvent(AudioFavouriteEvent event) {
+    //        //更新notifacation收藏状态
+    //        //        NotificationHelper.getInstance().changeFavouriteStatus(event.isFavourite);
+    //    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioReleaseEvent(AudioReleaseEvent event) {
-        //移除notifacation
-    }
+    //    @Subscribe(threadMode = ThreadMode.MAIN)
+    //    public void onAudioReleaseEvent(AudioReleaseEvent event) {
+    //        //移除notifacation
+    //    }
 
     /**
      * 接收Notification发送的广播

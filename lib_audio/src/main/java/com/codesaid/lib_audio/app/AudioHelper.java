@@ -3,6 +3,8 @@ package com.codesaid.lib_audio.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.codesaid.lib_audio.mediaplayer.db.GreenDaoHelper;
+
 
 /**
  * 唯一与外界通信的帮助类
@@ -16,7 +18,7 @@ public final class AudioHelper {
     public static void init(Context context) {
         mContext = context;
         //初始化本地数据库
-        //GreenDaoHelper.initDatabase();
+        GreenDaoHelper.initDatabase();
     }
 
     //    //外部启动MusicService方法
