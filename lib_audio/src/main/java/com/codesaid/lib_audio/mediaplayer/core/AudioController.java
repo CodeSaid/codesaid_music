@@ -1,7 +1,9 @@
 package com.codesaid.lib_audio.mediaplayer.core;
 
+import com.codesaid.lib_audio.mediaplayer.db.GreenDaoHelper;
 import com.codesaid.lib_audio.mediaplayer.events.AudioCompleteEvent;
 import com.codesaid.lib_audio.mediaplayer.events.AudioErrorEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioFavouriteEvent;
 import com.codesaid.lib_audio.mediaplayer.exception.AudioBeanEmptyException;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 
@@ -262,6 +264,18 @@ public class AudioController {
     public void next() {
         AudioBean audioBean = getNextPlaying();
         mAudioPlayer.load(audioBean);
+    }
+
+    public void changeFavourite() {
+        if (GreenDaoHelper.selectFavourite(getNowPlaying()) != null) {
+            // 取消收藏
+            GreenDaoHelper.removeFavourite(getNowPlaying());
+            EventBus.getDefault().post(new AudioFavouriteEvent(false));
+        } else {
+            // 添加到收藏
+            GreenDaoHelper.addFavourite(getNowPlaying());
+            EventBus.getDefault().post(new AudioFavouriteEvent(true));
+        }
     }
 
     /**
