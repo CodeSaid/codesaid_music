@@ -3,7 +3,11 @@ package com.codesaid.lib_audio.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.codesaid.lib_audio.mediaplayer.core.MusicService;
 import com.codesaid.lib_audio.mediaplayer.db.GreenDaoHelper;
+import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
+
+import java.util.ArrayList;
 
 
 /**
@@ -21,10 +25,10 @@ public final class AudioHelper {
         GreenDaoHelper.initDatabase();
     }
 
-    //    //外部启动MusicService方法
-    //    public static void startMusicService(ArrayList<AudioBean> audios) {
-    //        MusicService.startMusicService(audios);
-    //    }
+    //外部启动MusicService方法
+    public static void startMusicService(ArrayList<AudioBean> audios) {
+        MusicService.startMusicService(audios);
+    }
     //
     //    public static void addAudio(Activity activity, AudioBean bean) {
     //        AudioController.getInstance().addAudio(bean);

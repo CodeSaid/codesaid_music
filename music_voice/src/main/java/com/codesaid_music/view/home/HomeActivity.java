@@ -15,15 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codesaid.lib_audio.app.AudioHelper;
-import com.codesaid.lib_audio.mediaplayer.core.AudioController;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
 import com.codesaid_music.R;
+import com.codesaid_music.model.CHANNEL;
 import com.codesaid_music.model.login.LoginEvent;
 import com.codesaid_music.utils.UserManager;
 import com.codesaid_music.view.home.adapter.HomePagerAdapter;
-import com.codesaid_music.model.CHANNEL;
 import com.codesaid_music.view.login.LoginActivity;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -170,7 +169,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559698289780&di=5146d48002250bf38acfb4c9b4bb6e4e&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fp%2F20131220%2Fbki-20131220170401-1254350944.jpg",
                         "2:45"));
 
-        AudioController.getInstance().setAudioBeans(mLists);
+        AudioHelper.startMusicService(mLists);
     }
 
     @SuppressWarnings("SwitchStatementWithTooFewBranches")
@@ -186,6 +185,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     // 已经登录 关闭侧滑栏，并且刷新主页内容区
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                break;
+            case R.id.toggle_view:
+                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
                 break;
         }

@@ -28,8 +28,6 @@ import com.codesaid.lib_image_loader.api.ImageLoaderManager;
  */
 public class NotificationHelper {
 
-    public static String TAG = "NotificationHelpwe";
-
     public static final String CHANNEL_ID = "channel_id_audio";
     public static final String CHANNEL_NAME = "channel_name_audio";
     public static final int NOTIFICATION_ID = 0x111;
@@ -44,23 +42,26 @@ public class NotificationHelper {
     //当前要播的歌曲Bean
     private AudioBean mAudioBean;
 
-    private static NotificationHelper mInstance;
+    public static NotificationHelper getInstance() {
+        return SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static NotificationHelper instance = new NotificationHelper();
+    }
 
     private NotificationHelper() {
 
     }
 
     public void init(NotificationHelperListener listener) {
-        mNotificationManager = (NotificationManager) AudioHelper
-                .getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) AudioHelper.getContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         packageName = AudioHelper.getContext().getPackageName();
         mAudioBean = AudioController.getInstance().getNowPlaying();
         initNotification();
-
         mListener = listener;
-        if (mListener != null) {
-            mListener.onNotificationInit();
-        }
+        if (mListener != null) mListener.onNotificationInit();
     }
 
     /**
@@ -68,14 +69,14 @@ public class NotificationHelper {
      */
     private void initNotification() {
         if (mNotification == null) {
-            // 创建布局
+            //首先创建布局
             initRemoteViews();
-
             //再构建Notification
             //            Intent intent = new Intent(AudioHelper.getContext(), MusicPlayerActivity.class);
-            //            PendingIntent pendingIntent = PendingIntent.getActivity(AudioHelper.getContext(), 0, intent,
-            //                    PendingIntent.FLAG_UPDATE_CURRENT);
+            ////            PendingIntent pendingIntent = PendingIntent.getActivity(AudioHelper.getContext(), 0, intent,
+            ////                    PendingIntent.FLAG_UPDATE_CURRENT);
 
+            //适配安卓8.0的消息渠道
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel =
                         new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
@@ -235,16 +236,6 @@ public class NotificationHelper {
         }
     }
 
-    public static NotificationHelper getInstance() {
-        if (mInstance == null) {
-            synchronized (NotificationHelper.class) {
-                if (mInstance != null) {
-                    mInstance = new NotificationHelper();
-                }
-            }
-        }
-        return mInstance;
-    }
 
     public Notification getNotification() {
         return mNotification;
