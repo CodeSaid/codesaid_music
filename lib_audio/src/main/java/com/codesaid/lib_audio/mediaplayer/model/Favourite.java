@@ -6,10 +6,9 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
-
-import com.imooc.lib_audio.mediaplayer.db.DaoSession;
-import com.imooc.lib_audio.mediaplayer.db.AudioBeanDao;
-import com.imooc.lib_audio.mediaplayer.db.FavouriteDao;
+import com.codesaid.lib_audio.mediaplayer.db.DaoSession;
+import com.codesaid.lib_audio.mediaplayer.db.AudioBeanDao;
+import com.codesaid.lib_audio.mediaplayer.db.FavouriteDao;
 
 /**
  * 收藏表
@@ -137,9 +136,7 @@ public class Favourite {
         myDao.update(this);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1142028328)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

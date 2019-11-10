@@ -22,6 +22,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation this.rootProject.depsLibs.appcompat
+    implementation this.rootProject.depsLibs.design
     implementation this.rootProject.depsLibs.magicindicator
     implementation this.rootProject.depsLibs.eventbus
 
@@ -29,6 +30,12 @@ dependencies {
     implementation this.rootProject.depsLibs.okhttp
     // Gson
     implementation this.rootProject.depsLibs.gson
+
+    //greendao类库依赖
+    implementation this.rootProject.depsLibs.greendao
+    //rxjava库
+    implementation this.rootProject.depsLibs.rxjava
+    implementation this.rootProject.depsLibs.rxandroid
 
     testImplementation 'junit:junit:4.12'
     //基础UI库

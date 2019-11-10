@@ -5,9 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import com.codesaid.lib_audio.mediaplayer.model.Favourite;
-import com.imooc.lib_audio.mediaplayer.db.DaoMaster;
-import com.imooc.lib_audio.mediaplayer.db.DaoSession;
-import com.imooc.lib_audio.mediaplayer.db.FavouriteDao;
 
 /**
  * Created By codesaid
@@ -34,7 +31,7 @@ public class GreenDaoHelper {
 
 
     public static void initDatabase() {
-        mHelper = new DaoMaster.DevOpenHelper(AudioHelper.getContext(), DB_NAME);
+        mHelper = new DaoMaster.DevOpenHelper(AudioHelper.getContext(), DB_NAME, null);
         mDb = mHelper.getWritableDatabase();
         mDaoMaster = new DaoMaster(mDb);
         mDaoSession = mDaoMaster.newSession();

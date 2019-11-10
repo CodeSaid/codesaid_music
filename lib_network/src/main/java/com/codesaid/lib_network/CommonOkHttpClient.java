@@ -8,7 +8,6 @@ import com.codesaid.lib_network.okhttp.response.CommonFileCallback;
 import com.codesaid.lib_network.okhttp.response.CommonJsonCallback;
 import com.google.gson.Gson;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -93,12 +92,12 @@ public class CommonOkHttpClient {
         //        call.enqueue(new CommonJsonCallback(handle));
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            public void onFailure(Call call, IOException e) {
                 handle.mListener.onFailure(new OkHttpException(NETWORK_ERROR, e));
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException {
                 String result = response.body().string();
                 // 判断返回的数据是否为空
                 if (TextUtils.isEmpty(result)) {
