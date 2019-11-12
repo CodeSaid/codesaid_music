@@ -72,7 +72,7 @@ public class MusicPagerAdapter extends PagerAdapter {
         view.setRotation(0);
         ObjectAnimator animator = ObjectAnimator
                 .ofFloat(view, View.ROTATION.getName(), 0, 360);
-        animator.setDuration(1000);
+        animator.setDuration(6000);
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(-1);
         if (AudioController.getInstance().isStartState()) {

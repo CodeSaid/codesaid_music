@@ -13,6 +13,7 @@ import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_audio.mediaplayer.events.AudioFavouriteEvent;
 import com.codesaid.lib_audio.mediaplayer.events.AudioLoadEvent;
 import com.codesaid.lib_audio.mediaplayer.events.AudioPauseEvent;
+import com.codesaid.lib_audio.mediaplayer.events.AudioReleaseEvent;
 import com.codesaid.lib_audio.mediaplayer.events.AudioStartEvent;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import com.codesaid.lib_audio.mediaplayer.view.NotificationHelper;
@@ -30,6 +31,7 @@ import static com.codesaid.lib_audio.mediaplayer.view.NotificationHelper.NOTIFIC
  * @author CodeSaid
  * desc: 音乐后台服务,并更新notification状态
  */
+
 public class MusicService extends Service implements NotificationHelper.NotificationHelperListener {
 
     private static String DATA_AUDIOS = "AUDIOS";
@@ -133,10 +135,10 @@ public class MusicService extends Service implements NotificationHelper.Notifica
         NotificationHelper.getInstance().changeFavouriteStatus(event.isFavourite);
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onAudioReleaseEvent(AudioReleaseEvent event) {
-//        //移除notifacation
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAudioReleaseEvent(AudioReleaseEvent event) {
+        //移除notifacation
+    }
 
     /**
      * 接收Notification发送的广播

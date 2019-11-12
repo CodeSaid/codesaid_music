@@ -50,10 +50,6 @@ public class NotificationHelper {
         private static NotificationHelper instance = new NotificationHelper();
     }
 
-    private NotificationHelper() {
-
-    }
-
     public void init(NotificationHelperListener listener) {
         mNotificationManager = (NotificationManager) AudioHelper.getContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -64,8 +60,8 @@ public class NotificationHelper {
         if (mListener != null) mListener.onNotificationInit();
     }
 
-    /**
-     * 创建 Notification
+    /*
+     * 创建Notification,
      */
     private void initNotification() {
         if (mNotification == null) {
@@ -73,8 +69,8 @@ public class NotificationHelper {
             initRemoteViews();
             //再构建Notification
             Intent intent = new Intent(AudioHelper.getContext(), MusicPlayerActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(AudioHelper.getContext(),
-                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(AudioHelper.getContext(), 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
             //适配安卓8.0的消息渠道
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -85,8 +81,8 @@ public class NotificationHelper {
                 mNotificationManager.createNotificationChannel(channel);
             }
             NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(AudioHelper.getContext(), CHANNEL_ID)
-                            .setContentIntent(pendingIntent)
+                    new NotificationCompat.Builder(AudioHelper.getContext(), CHANNEL_ID).setContentIntent(
+                            pendingIntent)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setCustomBigContentView(mRemoteViews) //大布局
                             .setContent(mSmallRemoteViews); //正常布局，两个布局可以切换
@@ -96,119 +92,105 @@ public class NotificationHelper {
         }
     }
 
-    /**
-     * 初始化布局
+    /*
+     * 创建Notification的布局,默认布局为Loading状态
      */
     private void initRemoteViews() {
         int layoutId = R.layout.notification_big_layout;
         mRemoteViews = new RemoteViews(packageName, layoutId);
         mRemoteViews.setTextViewText(R.id.title_view, mAudioBean.name);
         mRemoteViews.setTextViewText(R.id.tip_view, mAudioBean.album);
-
-        if (GreenDaoHelper.selectFavourite(mAudioBean) != null) {
-            // 已经被收藏了
+        if (null != GreenDaoHelper.selectFavourite(mAudioBean)) {
             mRemoteViews.setImageViewResource(R.id.favourite_view, R.mipmap.note_btn_loved);
         } else {
-            // 没有被收藏
             mRemoteViews.setImageViewResource(R.id.favourite_view, R.mipmap.note_btn_love_white);
         }
 
-        int smallLayoutId = R.layout.notification_small_layout;
-        mSmallRemoteViews = new RemoteViews(packageName, smallLayoutId);
+        int smalllayoutId = R.layout.notification_small_layout;
+        mSmallRemoteViews = new RemoteViews(packageName, smalllayoutId);
         mSmallRemoteViews.setTextViewText(R.id.title_view, mAudioBean.name);
         mSmallRemoteViews.setTextViewText(R.id.tip_view, mAudioBean.album);
 
-        // 点击播放按钮要发送的广播
+        //点击播放按钮广播
         Intent playIntent = new Intent(MusicService.NotificationReceiver.ACTION_STATUS_BAR);
         playIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
                 MusicService.NotificationReceiver.EXTRA_PLAY);
-        PendingIntent playPendingIntent = PendingIntent.getBroadcast(AudioHelper.getContext(),
-                1, playIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent playPendingIntent =
+                PendingIntent.getBroadcast(AudioHelper.getContext(), 1, playIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.play_view, playPendingIntent);
+        mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);
         mSmallRemoteViews.setOnClickPendingIntent(R.id.play_view, playPendingIntent);
+        mSmallRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);
 
-
-        // 点击上一首按钮需要发送的广播
+        //点击上一首按钮广播
         Intent previousIntent = new Intent(MusicService.NotificationReceiver.ACTION_STATUS_BAR);
-        playIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
+        previousIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
                 MusicService.NotificationReceiver.EXTRA_PRE);
-        PendingIntent previousPendingIntent = PendingIntent.getBroadcast(AudioHelper.getContext(),
-                2, previousIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent previousPendingIntent =
+                PendingIntent.getBroadcast(AudioHelper.getContext(), 2, previousIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.previous_view, previousPendingIntent);
+        mRemoteViews.setImageViewResource(R.id.previous_view, R.mipmap.note_btn_pre_white);
 
-        // 点击下一首按钮需要发送的广播
+        //点击下一首按钮广播
         Intent nextIntent = new Intent(MusicService.NotificationReceiver.ACTION_STATUS_BAR);
-        playIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
-                MusicService.NotificationReceiver.EXTRA_NEXT);
-        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(AudioHelper.getContext(),
-                3, nextIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        nextIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
+                MusicService.NotificationReceiver.EXTRA_PRE);
+        PendingIntent nextPendingIntent =
+                PendingIntent.getBroadcast(AudioHelper.getContext(), 3, nextIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.next_view, nextPendingIntent);
+        mRemoteViews.setImageViewResource(R.id.next_view, R.mipmap.note_btn_next_white);
         mSmallRemoteViews.setOnClickPendingIntent(R.id.next_view, nextPendingIntent);
+        mSmallRemoteViews.setImageViewResource(R.id.next_view, R.mipmap.note_btn_next_white);
 
-        // 点击收藏按钮需要发送的广播
-        Intent favoriteIntent = new Intent(MusicService.NotificationReceiver.ACTION_STATUS_BAR);
-        playIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
+        //点击收藏按钮广播
+        Intent favouriteIntent = new Intent(MusicService.NotificationReceiver.ACTION_STATUS_BAR);
+        favouriteIntent.putExtra(MusicService.NotificationReceiver.EXTRA,
                 MusicService.NotificationReceiver.EXTRA_FAV);
-        PendingIntent favoritePendingIntent = PendingIntent.getBroadcast(AudioHelper.getContext(),
-                4, favoriteIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.favourite_view, favoritePendingIntent);
+        PendingIntent favouritePendingIntent =
+                PendingIntent.getBroadcast(AudioHelper.getContext(), 4, favouriteIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.favourite_view, favouritePendingIntent);
     }
 
+    public Notification getNotification() {
+        return mNotification;
+    }
 
     /**
-     * 更新为加载状态
-     *
-     * @param bean AudioBean
+     * 显示Notification的加载状态
      */
     public void showLoadStatus(AudioBean bean) {
+        //防止空指针crash
+        mAudioBean = bean;
         if (mRemoteViews != null) {
-            mAudioBean = bean;
-
-            // 更新大布局
             mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
             mRemoteViews.setTextViewText(R.id.title_view, mAudioBean.name);
             mRemoteViews.setTextViewText(R.id.tip_view, mAudioBean.album);
-
-            // 为 Notification 中的 ImageView 加载图片
             ImageLoaderManager.getInstance()
-                    .displayImageForNotification(
-                            AudioHelper.getContext(),
-                            mRemoteViews,
-                            R.id.image_view,
-                            mNotification,
-                            NOTIFICATION_ID,
-                            bean.albumPic);
-
-            // 更新为收藏状态
-            if (GreenDaoHelper.selectFavourite(mAudioBean) != null) {
-                // 已经被收藏了
+                    .displayImageForNotification(AudioHelper.getContext(), mRemoteViews, R.id.image_view,
+                            mNotification, NOTIFICATION_ID, mAudioBean.albumPic);
+            //更新收藏view
+            if (null != GreenDaoHelper.selectFavourite(mAudioBean)) {
                 mRemoteViews.setImageViewResource(R.id.favourite_view, R.mipmap.note_btn_loved);
             } else {
-                // 没有被收藏
                 mRemoteViews.setImageViewResource(R.id.favourite_view, R.mipmap.note_btn_love_white);
             }
 
-            // 更新小布局
+            //小布局也要更新
             mSmallRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
             mSmallRemoteViews.setTextViewText(R.id.title_view, mAudioBean.name);
             mSmallRemoteViews.setTextViewText(R.id.tip_view, mAudioBean.album);
-
-            // 为 Notification 中的 ImageView 加载图片
             ImageLoaderManager.getInstance()
-                    .displayImageForNotification(
-                            AudioHelper.getContext(),
-                            mSmallRemoteViews,
-                            R.id.image_view,
-                            mNotification,
-                            NOTIFICATION_ID,
-                            bean.albumPic);
+                    .displayImageForNotification(AudioHelper.getContext(), mSmallRemoteViews, R.id.image_view,
+                            mNotification, NOTIFICATION_ID, mAudioBean.albumPic);
+
+            mNotificationManager.notify(NOTIFICATION_ID, mNotification);
         }
-        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
     }
 
-    /**
-     * 更新为播放状态
-     */
     public void showPlayStatus() {
         if (mRemoteViews != null) {
             mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_pause_white);
@@ -217,9 +199,6 @@ public class NotificationHelper {
         }
     }
 
-    /**
-     * 更新为暂停状态
-     */
     public void showPauseStatus() {
         if (mRemoteViews != null) {
             mRemoteViews.setImageViewResource(R.id.play_view, R.mipmap.note_btn_play_white);
@@ -234,11 +213,6 @@ public class NotificationHelper {
                     isFavourite ? R.mipmap.note_btn_loved : R.mipmap.note_btn_love_white);
             mNotificationManager.notify(NOTIFICATION_ID, mNotification);
         }
-    }
-
-
-    public Notification getNotification() {
-        return mNotification;
     }
 
     /**
