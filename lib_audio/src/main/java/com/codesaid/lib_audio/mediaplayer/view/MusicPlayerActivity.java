@@ -230,7 +230,7 @@ public class MusicPlayerActivity extends BaseActivity {
     }
 
     /**
-     * 分享慕课网给好友
+     * 分享
      */
     private void shareMusic(String url, String name) {
 

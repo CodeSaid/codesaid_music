@@ -68,7 +68,7 @@ public class BottomMusicView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 //跳到音乐播放Activitity
-                //MusicPlayerActivity.start((Activity) mContext);
+                MusicPlayerActivity.start((Activity) mContext);
             }
         });
         mLeftView = rootView.findViewById(R.id.album_view);

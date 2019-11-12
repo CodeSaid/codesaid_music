@@ -72,9 +72,9 @@ public class NotificationHelper {
             //首先创建布局
             initRemoteViews();
             //再构建Notification
-            //            Intent intent = new Intent(AudioHelper.getContext(), MusicPlayerActivity.class);
-            ////            PendingIntent pendingIntent = PendingIntent.getActivity(AudioHelper.getContext(), 0, intent,
-            ////                    PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent intent = new Intent(AudioHelper.getContext(), MusicPlayerActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(AudioHelper.getContext(),
+                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //适配安卓8.0的消息渠道
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -86,7 +86,7 @@ public class NotificationHelper {
             }
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(AudioHelper.getContext(), CHANNEL_ID)
-                            //.setContentIntent(pendingIntent)
+                            .setContentIntent(pendingIntent)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setCustomBigContentView(mRemoteViews) //大布局
                             .setContent(mSmallRemoteViews); //正常布局，两个布局可以切换
