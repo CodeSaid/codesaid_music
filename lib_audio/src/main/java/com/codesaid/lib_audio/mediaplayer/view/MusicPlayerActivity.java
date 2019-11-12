@@ -5,14 +5,8 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-
-
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
@@ -20,30 +14,18 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-
 import com.codesaid.lib_audio.R;
 import com.codesaid.lib_audio.mediaplayer.core.AudioController;
-import com.codesaid.lib_audio.mediaplayer.core.CustomMediaPlayer;
 import com.codesaid.lib_audio.mediaplayer.db.GreenDaoHelper;
-import com.codesaid.lib_audio.mediaplayer.events.AudioFavouriteEvent;
-import com.codesaid.lib_audio.mediaplayer.events.AudioLoadEvent;
-import com.codesaid.lib_audio.mediaplayer.events.AudioPauseEvent;
-import com.codesaid.lib_audio.mediaplayer.events.AudioPlayModeEvent;
-import com.codesaid.lib_audio.mediaplayer.events.AudioProgressEvent;
-import com.codesaid.lib_audio.mediaplayer.events.AudioStartEvent;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
-import com.codesaid.lib_audio.mediaplayer.utils.Utils;
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * 播放音乐Activity
  */
-//@Route(path = "/audio/music_activity")
 public class MusicPlayerActivity extends BaseActivity {
 
     private RelativeLayout mBgView;
@@ -70,18 +52,13 @@ public class MusicPlayerActivity extends BaseActivity {
 
     public static void start(Activity context) {
         Intent intent = new Intent(context, MusicPlayerActivity.class);
-        ActivityCompat.startActivity(context, intent,
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context).toBundle());
+        context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //添加入场动画
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(
-                    TransitionInflater.from(this).inflateTransition(R.transition.transition_bottom2top));
-        }
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_music_service_layout);
         initData();
@@ -101,7 +78,9 @@ public class MusicPlayerActivity extends BaseActivity {
 
     private void initView() {
         mBgView = findViewById(R.id.root_layout);
-        ImageLoaderManager.getInstance().displayImageForViewGroup(mBgView, mAudioBean.albumPic);
+        // 给背景添加模糊效果
+        ImageLoaderManager.getInstance()
+                .displayImageForViewGroup(mBgView, mAudioBean.albumPic, true);
         findViewById(R.id.back_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,12 +102,13 @@ public class MusicPlayerActivity extends BaseActivity {
         findViewById(R.id.show_list_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MusicListDialog dialog = new MusicListDialog(MusicPlayerActivity.this);
-                dialog.show();
+                // 弹出歌曲列表
+
             }
         });
         mInfoView = findViewById(R.id.album_view);
         mInfoView.setText(mAudioBean.albumInfo);
+        // 跑马灯效果焦点获取
         mInfoView.requestFocus();
         mAuthorView = findViewById(R.id.author_view);
         mAuthorView.setText(mAudioBean.author);
@@ -155,13 +135,16 @@ public class MusicPlayerActivity extends BaseActivity {
                 //切换播放模式
                 switch (mPlayMode) {
                     case LOOP:
-                        AudioController.getInstance().setPlayMode(AudioController.PlayMode.RANDOM);
+                        AudioController.getInstance()
+                                .setPlayMode(AudioController.PlayMode.RANDOM);
                         break;
                     case RANDOM:
-                        AudioController.getInstance().setPlayMode(AudioController.PlayMode.REPEAT);
+                        AudioController.getInstance()
+                                .setPlayMode(AudioController.PlayMode.REPEAT);
                         break;
                     case REPEAT:
-                        AudioController.getInstance().setPlayMode(AudioController.PlayMode.LOOP);
+                        AudioController.getInstance()
+                                .setPlayMode(AudioController.PlayMode.LOOP);
                         break;
                 }
             }
@@ -171,6 +154,7 @@ public class MusicPlayerActivity extends BaseActivity {
         mPreViousView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 上一首
                 AudioController.getInstance().previous();
             }
         });
@@ -178,6 +162,7 @@ public class MusicPlayerActivity extends BaseActivity {
         mPlayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 播放 or  暂停
                 AudioController.getInstance().playOrPause();
             }
         });
@@ -185,62 +170,10 @@ public class MusicPlayerActivity extends BaseActivity {
         mNextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 下一曲
                 AudioController.getInstance().next();
             }
         });
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioLoadEvent(AudioLoadEvent event) {
-        //更新notifacation为load状态
-        mAudioBean = event.mAudioBean;
-        ImageLoaderManager.getInstance().displayImageForViewGroup(mBgView, mAudioBean.albumPic);
-        //可以与初始化时的封装一个方法
-        mInfoView.setText(mAudioBean.albumInfo);
-        mAuthorView.setText(mAudioBean.author);
-        changeFavouriteStatus(false);
-        mProgressView.setProgress(0);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioPauseEvent(AudioPauseEvent event) {
-        //更新activity为暂停状态
-        showPauseView();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioStartEvent(AudioStartEvent event) {
-        //更新activity为播放状态
-        showPlayView();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioFavouriteEvent(AudioFavouriteEvent event) {
-        //更新activity收藏状态
-        changeFavouriteStatus(true);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioPlayModeEvent(AudioPlayModeEvent event) {
-        mPlayMode = event.mPlayMode;
-        //更新播放模式
-        updatePlayModeView();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAudioProgessEvent(AudioProgressEvent event) {
-        int totalTime = event.maxLength;
-        int currentTime = event.progress;
-        //更新时间
-        mStartTimeView.setText(Utils.formatTime(currentTime));
-        mTotalTimeView.setText(Utils.formatTime(totalTime));
-        mProgressView.setProgress(currentTime);
-        mProgressView.setMax(totalTime);
-        if (event.mStatus == CustomMediaPlayer.Status.PAUSED) {
-            showPauseView();
-        } else {
-            showPlayView();
-        }
     }
 
     private void showPlayView() {
@@ -265,24 +198,34 @@ public class MusicPlayerActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 初始化歌曲的收藏状态
+     *
+     * @param anim 是否执行动画
+     */
     private void changeFavouriteStatus(boolean anim) {
         if (GreenDaoHelper.selectFavourite(mAudioBean) != null) {
+            // 已经在收藏列表
             mFavouriteView.setImageResource(R.mipmap.audio_aeh);
         } else {
             mFavouriteView.setImageResource(R.mipmap.audio_aef);
         }
 
         if (anim) {
-            //留个作业，将动画封到view中作为一个自定义View
-            if (animator != null) animator.end();
-            PropertyValuesHolder animX =
-                    PropertyValuesHolder.ofFloat(View.SCALE_X.getName(), 1.0f, 1.2f, 1.0f);
-            PropertyValuesHolder animY =
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y.getName(), 1.0f, 1.2f, 1.0f);
-            animator = ObjectAnimator.ofPropertyValuesHolder(mFavouriteView, animX, animY);
-            animator.setInterpolator(new AccelerateInterpolator());
-            animator.setDuration(300);
-            animator.start();
+            // 执行收藏动画效果
+            if (animator != null) {
+                // 若 不为 null  则先结束上一次动画
+                animator.end();
+            } else {
+                PropertyValuesHolder animX = PropertyValuesHolder
+                        .ofFloat(View.SCALE_X.getName(), 1.0f, 1.2f, 1.0f);
+                PropertyValuesHolder animY = PropertyValuesHolder
+                        .ofFloat(View.SCALE_Y, 1.0f, 1.2f, 1.0f);
+                animator = ObjectAnimator.ofPropertyValuesHolder(animX, animY);
+                animator.setInterpolator(new AccelerateInterpolator());
+                animator.setDuration(300);
+                animator.start();
+            }
         }
     }
 
@@ -290,13 +233,6 @@ public class MusicPlayerActivity extends BaseActivity {
      * 分享慕课网给好友
      */
     private void shareMusic(String url, String name) {
-        ShareDialog dialog = new ShareDialog(this, false);
-        dialog.setShareType(5);
-        dialog.setShareTitle(name);
-        dialog.setShareTitleUrl(url);
-        dialog.setShareText("慕课网");
-        dialog.setShareSite("imooc");
-        dialog.setShareSiteUrl("http://www.imooc.com");
-        dialog.show();
+
     }
 }
