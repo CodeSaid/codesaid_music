@@ -3,6 +3,7 @@ package com.codesaid_music.application;
 import android.app.Application;
 
 import com.codesaid.lib_audio.app.AudioHelper;
+import com.codesaid.lib_share.ShareManager;
 
 public class MusicVoiceApplication extends Application {
 
@@ -17,7 +18,7 @@ public class MusicVoiceApplication extends Application {
         //音频SDK初始化
         AudioHelper.init(this);
         //分享SDK初始化
-        //        ShareManager.initSDK(this);
+        ShareManager.init(this);
         //更新组件下载
         //        UpdateHelper.init(this);
         //ARouter初始化

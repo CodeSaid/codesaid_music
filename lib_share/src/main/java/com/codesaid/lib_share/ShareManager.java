@@ -45,11 +45,11 @@ public class ShareManager implements PlatformActionListener {
      *
      * @param context context
      */
-    public void init(Context context) {
+    public static void init(Context context) {
         ShareSDK.initSDK(context);
     }
 
-    public void ShareData(ShareData shareData, PlatformShareListener listener) {
+    public void shareData(ShareData shareData, PlatformShareListener listener) {
         mListener = listener;
         switch (shareData.mPlatofrmType) {
             case QQ:
