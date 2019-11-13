@@ -23,7 +23,22 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation this.rootProject.depsLibs.appcompat
+    //基础UI库
+    implementation project(':lib_commin_ui')
+    implementation files('libs/MobCommons-2016.0811.1207.jar')
+    implementation files('libs/MobTools-2016.0811.1207.jar')
+    implementation files('libs/ShareSDK-Core-2.7.5.jar')
+    implementation files('libs/ShareSDK-QQ-2.7.5.jar')
+    implementation files('libs/ShareSDK-QZone-2.7.5.jar')
+    implementation files('libs/ShareSDK-Wechat-2.7.5.jar')
+    implementation files('libs/ShareSDK-Wechat-Core-2.7.5.jar')
+    implementation files('libs/ShareSDK-Wechat-Moments-2.7.5.jar')
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
