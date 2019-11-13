@@ -15,6 +15,7 @@ import com.codesaid.lib_share.bean.Share;
 import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 
 /**
  * Created By codesaid
@@ -94,23 +95,23 @@ public class ShareDialog extends Dialog {
     /**
      * 处理分享结果
      */
-    private ShareManager.PlatformShareListener mListener = new ShareManager.PlatformShareListener() {
-
+    private PlatformActionListener mListener = new PlatformActionListener() {
         @Override
-        public void onComplete(int var2, HashMap<String, Object> var3) {
+        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
 
         }
 
         @Override
-        public void onError(int var2, Throwable var3) {
+        public void onError(Platform platform, int i, Throwable throwable) {
 
         }
 
         @Override
-        public void onCancel(int var2) {
+        public void onCancel(Platform platform, int i) {
 
         }
     };
+
 
     private void shareData(ShareManager.PlatformType platform) {
         ShareData mData = new ShareData();

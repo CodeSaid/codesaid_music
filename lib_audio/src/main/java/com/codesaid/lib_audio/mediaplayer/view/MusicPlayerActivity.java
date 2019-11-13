@@ -32,6 +32,8 @@ import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import com.codesaid.lib_audio.mediaplayer.utils.Utils;
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
+import com.codesaid.lib_share.ShareDialog;
+import com.codesaid.lib_share.bean.Share;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -291,6 +293,17 @@ public class MusicPlayerActivity extends BaseActivity {
      * 分享慕课网给好友
      */
     private void shareMusic(String url, String name) {
+        Share share = new Share
+                .Builder()
+                .setShareType(5)
+                .setShareTitle(name)
+                .setShareTitleUrl(url)
+                .setShareText("CodeSaid")
+                .setShareSite("codesaid")
+                .setShareSiteUrl("www.codesaid.com")
+                .build();
 
+        ShareDialog shareDialog = new ShareDialog(this, share);
+        shareDialog.show();
     }
 }

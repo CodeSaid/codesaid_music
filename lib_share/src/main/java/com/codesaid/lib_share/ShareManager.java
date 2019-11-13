@@ -2,8 +2,6 @@ package com.codesaid.lib_share;
 
 import android.content.Context;
 
-import java.util.HashMap;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -18,7 +16,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  * Package Name: com.codesaid.lib_share
  * desc : 分享功能单例管理类
  */
-public class ShareManager implements PlatformActionListener {
+public class ShareManager {
 
     /**
      * @author 应用程序需要的平台
@@ -28,8 +26,6 @@ public class ShareManager implements PlatformActionListener {
     }
 
     private static ShareManager mInstance;
-
-    private PlatformShareListener mListener;
 
     /**
      * 要分享的平台
@@ -49,8 +45,7 @@ public class ShareManager implements PlatformActionListener {
         ShareSDK.initSDK(context);
     }
 
-    public void shareData(ShareData shareData, PlatformShareListener listener) {
-        mListener = listener;
+    void shareData(ShareData shareData, PlatformActionListener listener) {
         switch (shareData.mPlatofrmType) {
             case QQ:
                 mPlatform = ShareSDK.getPlatform(QQ.NAME);
@@ -66,40 +61,8 @@ public class ShareManager implements PlatformActionListener {
                 break;
 
         }
-        mPlatform.setPlatformActionListener(this);
+        mPlatform.setPlatformActionListener(listener);
         mPlatform.share(shareData.mShareParams);
-    }
-
-    @Override
-    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        if (mListener != null) {
-            mListener.onComplete(i, hashMap);
-        }
-    }
-
-    @Override
-    public void onError(Platform platform, int i, Throwable throwable) {
-        if (mListener != null) {
-            mListener.onError(i, throwable);
-        }
-    }
-
-    @Override
-    public void onCancel(Platform platform, int i) {
-        if (mListener != null) {
-            mListener.onCancel(i);
-        }
-    }
-
-    /**
-     * 自己包装一层 PlatFormActionListener
-     */
-    public interface PlatformShareListener {
-        void onComplete(int var2, HashMap<String, Object> var3);
-
-        void onError(int var2, Throwable var3);
-
-        void onCancel(int var2);
     }
 
     public static ShareManager getInstance() {
