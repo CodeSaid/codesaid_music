@@ -8,7 +8,11 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 /**
@@ -24,6 +28,22 @@ public class AliveJobService extends JobService {
     private static final String TAG = AliveJobService.class.getName();
 
     private JobScheduler mJobScheduler;
+
+    private static final int PULL_ALIVE = 0x01;
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case PULL_ALIVE:
+                    Log.e(TAG, "pull alive");
+                    jobFinished((JobParameters) msg.obj, true);
+                    break;
+                case 0x02:
+                    break;
+            }
+        }
+    };
 
     public static void start(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -69,11 +89,13 @@ public class AliveJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        mHandler.sendMessage(Message.obtain(mHandler, PULL_ALIVE, params));
         return false;
     }
 
     @Override
     public boolean onStopJob(JobParameters params) {
+        mHandler.removeCallbacksAndMessages(null);
         return false;
     }
 }
