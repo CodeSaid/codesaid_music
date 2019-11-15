@@ -3,6 +3,7 @@ package com.codesaid_music.api;
 import com.codesaid.lib_network.CommonOkHttpClient;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataHandle;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
+import com.codesaid_music.model.friend.FriendModel;
 import com.codesaid_music.model.user.User;
 
 import okhttp3.Request;
@@ -16,6 +17,8 @@ import okhttp3.Request;
 public class RequestCenter {
 
     public static String LOGIN = "http://132.232.72.120:8080/music/login.json";
+
+    public static String FRIEND = "http://132.232.72.120:8080/music/login.json";
 
     static class HttpConstants {
         //        private static final String ROOT_URL = "http://imooc.com/api";
@@ -66,5 +69,14 @@ public class RequestCenter {
      */
     public static void login(DisposeDataListener listener) {
         RequestCenter.getRequest(LOGIN, listener, User.class);
+    }
+
+    /**
+     * 获取朋友页面数据
+     *
+     * @param listener listener
+     */
+    public static void getFriendData(DisposeDataListener listener) {
+        RequestCenter.getRequest(FRIEND, listener, FriendModel.class);
     }
 }
