@@ -18,7 +18,7 @@ public class RequestCenter {
 
     public static String LOGIN = "http://132.232.72.120:8080/music/login.json";
 
-    public static String FRIEND = "http://132.232.72.120:8080/music/login.json";
+    public static String FRIEND = "http://132.232.72.120:8080/music/friend.json";
 
     static class HttpConstants {
         //        private static final String ROOT_URL = "http://imooc.com/api";

@@ -7,16 +7,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codesaid.lib_commin_ui.recyclerview.wrapper.LoadMoreWrapper;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
 import com.codesaid_music.R;
 import com.codesaid_music.api.RequestCenter;
-import com.codesaid_music.model.friend.BaseFriendModel;
 import com.codesaid_music.model.friend.FriendBodyValue;
+import com.codesaid_music.model.friend.FriendModel;
+import com.codesaid_music.view.friend.adapter.FriendAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,7 @@ import java.util.List;
  * Package Name: com.codesaid_music.view.friend
  * desc: 首页 Friend Fragment
  */
-public class FriendFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FriendFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LoadMoreWrapper.OnLoadMoreListener {
 
     private Context mContext;
 
@@ -36,11 +39,13 @@ public class FriendFragment extends Fragment implements SwipeRefreshLayout.OnRef
      */
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private FriendAdapter mAdapter;
+    private LoadMoreWrapper mLoadMoreWrapper;
 
     /**
      * data
      */
-    private BaseFriendModel mRecommandData;
+    private FriendModel mRecommandData;
     private List<FriendBodyValue> mDatas = new ArrayList<>();
 
     public static Fragment newInstance() {
@@ -65,6 +70,7 @@ public class FriendFragment extends Fragment implements SwipeRefreshLayout.OnRef
         // 设置滑动监听事件
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = rootView.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         return rootView;
     }
 
@@ -87,7 +93,7 @@ public class FriendFragment extends Fragment implements SwipeRefreshLayout.OnRef
         RequestCenter.getFriendData(new DisposeDataListener() {
             @Override
             public void onSuccess(Object responseObj) {
-                mRecommandData = (BaseFriendModel) responseObj;
+                mRecommandData = (FriendModel) responseObj;
                 updateUI();
             }
 
@@ -102,6 +108,41 @@ public class FriendFragment extends Fragment implements SwipeRefreshLayout.OnRef
      * 更新界面显示
      */
     private void updateUI() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        mDatas = mRecommandData.list;
+        mAdapter = new FriendAdapter(mContext, mDatas);
 
+        mLoadMoreWrapper = new LoadMoreWrapper(mAdapter);
+        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
+        mLoadMoreWrapper.setOnLoadMoreListener(this);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        loadMore();
+    }
+
+    /**
+     * 加载更多数据
+     */
+    private void loadMore() {
+        RequestCenter.getFriendData(new DisposeDataListener() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                // 显示数据
+                FriendModel moreData = (FriendModel) responseObj;
+                // 追加数据到 adapter 中
+                mDatas.addAll(moreData.list);
+                mLoadMoreWrapper.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Object reasonObj) {
+
+            }
+        });
     }
 }
