@@ -1,11 +1,14 @@
 package com.codesaid.lib_audio.app;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 
+import com.codesaid.lib_audio.mediaplayer.core.AudioController;
 import com.codesaid.lib_audio.mediaplayer.core.MusicService;
 import com.codesaid.lib_audio.mediaplayer.db.GreenDaoHelper;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
+import com.codesaid.lib_audio.mediaplayer.view.MusicPlayerActivity;
 
 import java.util.ArrayList;
 
@@ -29,12 +32,12 @@ public final class AudioHelper {
     public static void startMusicService(ArrayList<AudioBean> audios) {
         MusicService.startMusicService(audios);
     }
-    //
-    //    public static void addAudio(Activity activity, AudioBean bean) {
-    //        AudioController.getInstance().addAudio(bean);
-    //        MusicPlayerActivity.start(activity);
-    //    }
-    //
+
+    public static void addAudio(Activity activity, AudioBean bean) {
+        AudioController.getInstance().addAudio(bean);
+        MusicPlayerActivity.start(activity);
+    }
+
     //    public static void pauseAudio() {
     //        AudioController.getInstance().pause();
     //    }
