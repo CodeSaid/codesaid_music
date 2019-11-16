@@ -2,7 +2,9 @@ package com.codesaid.lib_network;
 
 import android.text.TextUtils;
 
+import com.codesaid.lib_network.okhttp.cookie.SimpleCookieJar;
 import com.codesaid.lib_network.okhttp.exception.OkHttpException;
+import com.codesaid.lib_network.okhttp.https.HttpsUtils;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataHandle;
 import com.codesaid.lib_network.okhttp.response.CommonFileCallback;
 import com.codesaid.lib_network.okhttp.response.CommonJsonCallback;
@@ -18,6 +20,7 @@ import javax.net.ssl.SSLSession;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,16 +57,16 @@ public class CommonOkHttpClient {
         /**
          *  为所有请求添加请求头，看个人需求
          */
-        //        okHttpClientBuilder.addInterceptor(new Interceptor() {
-        //            @Override
-        //            public Response intercept(Chain chain) throws IOException {
-        //                Request request =
-        //                        chain.request().newBuilder().addHeader("User-Agent", "Imooc-Mobile") // 标明发送本次请求的客户端
-        //                                .build();
-        //                return chain.proceed(request);
-        //            }
-        //        });
-        //        okHttpClientBuilder.cookieJar(new SimpleCookieJar());
+        okHttpClientBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request =
+                        chain.request().newBuilder().addHeader("User-Agent", "Imooc-Mobile") // 标明发送本次请求的客户端
+                                .build();
+                return chain.proceed(request);
+            }
+        });
+        okHttpClientBuilder.cookieJar(new SimpleCookieJar());
         okHttpClientBuilder.connectTimeout(TIME_OUT, TimeUnit.SECONDS);
         okHttpClientBuilder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
         okHttpClientBuilder.writeTimeout(TIME_OUT, TimeUnit.SECONDS);
@@ -71,8 +74,8 @@ public class CommonOkHttpClient {
         /**
          * trust all the https point
          */
-        //        okHttpClientBuilder.sslSocketFactory(HttpsUtils.initSSLSocketFactory(),
-        //                HttpsUtils.initTrustManager());
+        okHttpClientBuilder.sslSocketFactory(HttpsUtils.initSSLSocketFactory(),
+                HttpsUtils.initTrustManager());
         mOkHttpClient = okHttpClientBuilder.build();
     }
 
