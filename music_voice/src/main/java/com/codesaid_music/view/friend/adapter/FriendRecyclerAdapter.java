@@ -86,4 +86,22 @@ public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
             imageViewLayout.setList(recommandBodyValue.pics);
         }
     }
+
+    private class VideoItemDelegate implements ItemViewDelegate<FriendBodyValue> {
+
+        @Override
+        public int getItemViewLayoutId() {
+            return R.layout.item_friend_list_video_layout;
+        }
+
+        @Override
+        public boolean isForViewType(FriendBodyValue item, int position) {
+            return item.type == FriendRecyclerAdapter.VIDEO_TYPE;
+        }
+
+        @Override
+        public void convert(ViewHolder holder, FriendBodyValue friendBodyValue, int position) {
+
+        }
+    }
 }
