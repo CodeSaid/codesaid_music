@@ -523,7 +523,23 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
         @SuppressWarnings("ConstantConditions")
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            //主动锁屏时 pause, 主动解锁屏幕时，resume
+            switch (intent.getAction()) {
+                case Intent.ACTION_USER_PRESENT: // 表示当前应用在前台
+                    if (isRealPause()) {
+                        //手动点的暂停，回来后还暂停
+                        pause();
+                    } else {
+                        resume();
+                    }
+                    break;
+                case Intent.ACTION_SCREEN_OFF: // 关屏状态
+                    if (playerState == STATE_PLAYING) {
+                        // 暂停播放
+                        pause();
+                    }
+                    break;
+            }
         }
     }
 
