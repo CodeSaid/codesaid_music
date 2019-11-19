@@ -178,7 +178,7 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
         setIsComplete(false);
     }
 
-    private void isShowFullBtn(boolean isShow) {
+    public void isShowFullBtn(boolean isShow) {
         mFullBtn.setImageResource(isShow ? R.drawable.xadsdk_ad_mini : R.drawable.xadsdk_ad_mini_null);
         mFullBtn.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
@@ -192,11 +192,11 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
         playerState = state;
     }
 
-    private boolean isRealPause() {
+    public boolean isRealPause() {
         return mIsRealPause;
     }
 
-    private boolean isComplete() {
+    public boolean isComplete() {
         return mIsComplete;
     }
 
@@ -275,7 +275,7 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
     /**
      * 恢复播放视频
      */
-    private void resume() {
+    public void resume() {
         if (this.playerState != STATE_PAUSING) {
             return;
         }
