@@ -67,7 +67,7 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
     private int playerState = STATE_IDLE;
 
     private MediaPlayer mediaPlayer;
-    private ADVideoPlayerListener listener;
+    private ADVideoPlayerListener mListener;
     private ScreenEventReceiver mScreenReceiver;
 
     public CustomVideoView(Context context) {
@@ -236,7 +236,7 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
     }
 
     public void setListener(ADVideoPlayerListener listener) {
-        this.listener = listener;
+        this.mListener = listener;
     }
 
     /**
@@ -414,7 +414,11 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-
+        // surface 可用
+        videoSurface = new Surface(surface);
+        checkMediaPlayer();
+        mediaPlayer.setSurface(videoSurface);
+        load();
     }
 
     @Override
@@ -434,22 +438,81 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
+        // 加载成功
+        showPlayView();
+        if (mediaPlayer != null) {
+            mCurrentCount = 0;
+            setCurrentPlayState(STATE_PLAYING);
+            resume();
+            if (mListener != null) {
+                mListener.onAdVideoLoadSuccess();
+            }
+        }
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-
+        // 播放完毕
+        playBack();
+        setIsComplete(true);
+        setIsRealPause(true);
+        if (mListener != null) {
+            mListener.onAdVideoComplete();
+        }
     }
 
+    /**
+     * 加载视频出错的处理
+     */
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        return false;
+        setCurrentPlayState(STATE_ERROR);
+        // 真正出错
+        if (mCurrentCount >= LOAD_TOTAL_COUNT) {
+            showPauseView(false);
+            if (mListener != null) {
+                mListener.onAdVideoLoadFailed();
+            }
+        }
+        // 重新加载
+        stop();
+        return true;
     }
 
     @Override
     public void onClick(View v) {
+        if (v == mMiniPlayBtn) {
+            if (playerState == STATE_PAUSING) {
+                resume();
+            } else {
+                load();
+            }
+        } else if (v == mFullBtn) {
+            if (mListener != null) {
+                mListener.onClickFullScreenBtn();
+            }
+        } else if (v == mVideoView) {
+            if (mListener != null) {
+                mListener.onClickVideo();
+            }
+        }
+    }
 
+    @SuppressWarnings("NullableProblems")
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        if (visibility == View.VISIBLE) {
+            if (isRealPause() || isComplete()) {
+                // 主动暂停，不恢复
+                pause();
+            } else {
+                // 被动暂停，恢复
+                resume();
+            }
+        } else {
+            // 不可见
+            pause();
+        }
     }
 
     /**
@@ -460,24 +523,7 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
         @SuppressWarnings("ConstantConditions")
         @Override
         public void onReceive(Context context, Intent intent) {
-            //主动锁屏时 pause, 主动解锁屏幕时，resume
-            switch (intent.getAction()) {
-                case Intent.ACTION_USER_PRESENT:
-                    if (playerState == STATE_PAUSING) {
-                        if (mIsRealPause) {
-                            //手动点的暂停，回来后还暂停
-                            pause();
-                        } else {
-                            resume();
-                        }
-                    }
-                    break;
-                case Intent.ACTION_SCREEN_OFF:
-                    if (playerState == STATE_PLAYING) {
-                        pause();
-                    }
-                    break;
-            }
+
         }
     }
 
@@ -500,7 +546,7 @@ public class CustomVideoView extends RelativeLayout implements TextureView.Surfa
 
         void onAdVideoLoadFailed();
 
-        void onAdVideoLoadComplete();
+        void onAdVideoComplete();
     }
 
     public interface ADFrameImageLoadListener {
