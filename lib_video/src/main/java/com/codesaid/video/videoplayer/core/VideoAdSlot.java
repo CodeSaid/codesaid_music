@@ -87,7 +87,7 @@ public class VideoAdSlot implements CustomVideoView.ADVideoPlayerListener {
     /**
      * destroy the video
      */
-    private void destroy() {
+    public void destroy() {
         mCustomVideoView.destroy();
         mCustomVideoView = null;
         mContext = null;
