@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_commin_ui.MultiImageViewLayout;
@@ -11,6 +12,7 @@ import com.codesaid.lib_commin_ui.recyclerview.MultiItemTypeAdapter;
 import com.codesaid.lib_commin_ui.recyclerview.base.ItemViewDelegate;
 import com.codesaid.lib_commin_ui.recyclerview.base.ViewHolder;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
+import com.codesaid.video.videoplayer.core.VideoAdContext;
 import com.codesaid_music.R;
 import com.codesaid_music.model.friend.FriendBodyValue;
 import com.codesaid_music.utils.UserManager;
@@ -34,7 +36,7 @@ public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
         super(context, datas);
         mContext = context;
         addItemViewDelegate(MUSIC_TYPE, new MusicItemDelegate());
-        //        addItemViewDelegate(VIDEO_TYPE, new VideoItemDelegate());
+        addItemViewDelegate(VIDEO_TYPE, new VideoItemDelegate());
     }
 
     /**
@@ -101,7 +103,25 @@ public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
 
         @Override
         public void convert(ViewHolder holder, FriendBodyValue friendBodyValue, int position) {
-
+            RelativeLayout relativeLayout = holder.getView(R.id.video_layout);
+            VideoAdContext videoAdContext = new
+                    VideoAdContext(relativeLayout, friendBodyValue.videoUrl);
+            holder.setText(R.id.fansi_view, friendBodyValue.fans + "粉丝");
+            holder.setText(R.id.name_view, friendBodyValue.name + " 分享视频");
+            holder.setText(R.id.text_view, friendBodyValue.text);
+            holder.setOnClickListener(R.id.guanzhu_view, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!UserManager.getInstance().hasLogined()) {
+                        // goto login
+                        LoginActivity.start(mContext);
+                    }
+                }
+            });
+            ImageView avatar = holder.getView(R.id.photo_view);
+            ImageLoaderManager
+                    .getInstance()
+                    .displayImageForCircle(avatar, friendBodyValue.avatr);
         }
     }
 }
