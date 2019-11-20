@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_share.ShareManager;
+import com.codesaid.video.app.VideoHelper;
 
 public class MusicVoiceApplication extends Application {
 
@@ -14,7 +15,7 @@ public class MusicVoiceApplication extends Application {
         super.onCreate();
         mApplication = this;
         //视频SDK初始化
-        //        VideoHelper.init(this);
+        VideoHelper.init(this);
         //音频SDK初始化
         AudioHelper.init(this);
         //分享SDK初始化

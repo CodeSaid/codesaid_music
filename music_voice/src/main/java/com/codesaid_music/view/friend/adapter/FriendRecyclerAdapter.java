@@ -12,6 +12,7 @@ import com.codesaid.lib_commin_ui.recyclerview.MultiItemTypeAdapter;
 import com.codesaid.lib_commin_ui.recyclerview.base.ItemViewDelegate;
 import com.codesaid.lib_commin_ui.recyclerview.base.ViewHolder;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
+import com.codesaid.video.videoplayer.VideoContextInterface;
 import com.codesaid.video.videoplayer.core.VideoAdContext;
 import com.codesaid_music.R;
 import com.codesaid_music.model.friend.FriendBodyValue;
@@ -106,6 +107,25 @@ public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
             RelativeLayout relativeLayout = holder.getView(R.id.video_layout);
             VideoAdContext videoAdContext = new
                     VideoAdContext(relativeLayout, friendBodyValue.videoUrl);
+
+            // 视频播放回调处理
+            videoAdContext.setResultListener(new VideoContextInterface() {
+                @Override
+                public void onVideoSuccess() {
+
+                }
+
+                @Override
+                public void onVideoFailed() {
+
+                }
+
+                @Override
+                public void onVideoComplete() {
+
+                }
+            });
+
             holder.setText(R.id.fansi_view, friendBodyValue.fans + "粉丝");
             holder.setText(R.id.name_view, friendBodyValue.name + " 分享视频");
             holder.setText(R.id.text_view, friendBodyValue.text);
