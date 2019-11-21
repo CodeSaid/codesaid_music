@@ -28,11 +28,12 @@ import java.util.List;
  */
 public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
 
-    public static final int MUSIC_TYPE = 0x01; //音乐类型
-    public static final int VIDEO_TYPE = 0x02; //视频类型
+    private static final int MUSIC_TYPE = 0x01; //音乐类型
+    private static final int VIDEO_TYPE = 0x02; //视频类型
 
     private Context mContext;
 
+    @SuppressWarnings("unchecked")
     public FriendRecyclerAdapter(Context context, List<FriendBodyValue> datas) {
         super(context, datas);
         mContext = context;
@@ -55,19 +56,19 @@ public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
         }
 
         @Override
-        public void convert(ViewHolder holder, final FriendBodyValue recommandBodyValue, int position) {
-            holder.setText(R.id.name_view, recommandBodyValue.name + " 分享单曲:");
-            holder.setText(R.id.fansi_view, recommandBodyValue.fans + "粉丝");
-            holder.setText(R.id.text_view, recommandBodyValue.text);
-            holder.setText(R.id.zan_view, recommandBodyValue.zan);
-            holder.setText(R.id.message_view, recommandBodyValue.msg);
-            holder.setText(R.id.audio_name_view, recommandBodyValue.audioBean.name);
-            holder.setText(R.id.audio_author_view, recommandBodyValue.audioBean.album);
+        public void convert(ViewHolder holder, final FriendBodyValue recommendBodyValue, int position) {
+            holder.setText(R.id.name_view, recommendBodyValue.name + " 分享单曲:");
+            holder.setText(R.id.fansi_view, recommendBodyValue.fans + "粉丝");
+            holder.setText(R.id.text_view, recommendBodyValue.text);
+            holder.setText(R.id.zan_view, recommendBodyValue.zan);
+            holder.setText(R.id.message_view, recommendBodyValue.msg);
+            holder.setText(R.id.audio_name_view, recommendBodyValue.audioBean.name);
+            holder.setText(R.id.audio_author_view, recommendBodyValue.audioBean.album);
             holder.setOnClickListener(R.id.album_layout, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //调用播放器装饰类
-                    AudioHelper.addAudio((Activity) mContext, recommandBodyValue.audioBean);
+                    AudioHelper.addAudio((Activity) mContext, recommendBodyValue.audioBean);
                 }
             });
             holder.setOnClickListener(R.id.guanzhu_view, new View.OnClickListener() {
@@ -80,13 +81,13 @@ public class FriendRecyclerAdapter extends MultiItemTypeAdapter {
                 }
             });
             ImageView avatar = holder.getView(R.id.photo_view);
-            ImageLoaderManager.getInstance().displayImageForCircle(avatar, recommandBodyValue.avatr);
+            ImageLoaderManager.getInstance().displayImageForCircle(avatar, recommendBodyValue.avatr);
             ImageView albumPicView = holder.getView(R.id.album_view);
             ImageLoaderManager.getInstance()
-                    .displayImageForView(albumPicView, recommandBodyValue.audioBean.albumPic);
+                    .displayImageForView(albumPicView, recommendBodyValue.audioBean.albumPic);
 
             MultiImageViewLayout imageViewLayout = holder.getView(R.id.image_layout);
-            imageViewLayout.setList(recommandBodyValue.pics);
+            imageViewLayout.setList(recommendBodyValue.pics);
         }
     }
 
