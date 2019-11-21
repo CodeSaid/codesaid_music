@@ -14,6 +14,9 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.codesaid.lib_webview.adbrowser.AdBrowserLayout;
 import com.codesaid.lib_webview.adbrowser.AdBrowserWebViewClient;
 import com.codesaid.lib_webview.adbrowser.Base64Drawables;
@@ -26,6 +29,8 @@ import com.codesaid.lib_webview.utils.Utils;
  * Package Name: com.codesaid.lib_webview.activity
  * desc: WebView 页面
  */
+@SuppressWarnings("FieldCanBeLocal")
+@Route(path = "/webview/web_activity")
 public class AdBrowserActivity extends Activity {
 
     /**
@@ -45,6 +50,7 @@ public class AdBrowserActivity extends Activity {
     /**
      * Data
      */
+    @Autowired(name = KEY_URL)
     protected String mUrl;
     private boolean mIsBackFromMarket = false;
     private AdBrowserWebViewClient.Listener mWebClientListener;
@@ -52,6 +58,8 @@ public class AdBrowserActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 注册 ARouter
+        ARouter.getInstance().inject(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -89,7 +97,7 @@ public class AdBrowserActivity extends Activity {
     protected void onResume() {
         super.onResume();
         if (mIsBackFromMarket) {
-            //            finish();
+            finish();
         }
         mIsBackFromMarket = true;
         mLayout.getProgressBar().setVisibility(View.INVISIBLE);

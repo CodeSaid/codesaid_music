@@ -14,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
 import com.codesaid_music.R;
+import com.codesaid_music.constant.Constant;
 import com.codesaid_music.model.CHANNEL;
 import com.codesaid_music.model.login.LoginEvent;
 import com.codesaid_music.utils.UserManager;
@@ -99,6 +101,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mUnLoginLayout.setOnClickListener(this);
         mPhotoView = findViewById(R.id.avatr_view);
 
+    }
+
+    private void gotoWebView(String url) {
+        ARouter.getInstance()
+                .build(Constant.Router.ROUTER_WEB_ACTIVIYT)
+                .withString("url", url)
+                .navigation();
     }
 
     /**
