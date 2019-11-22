@@ -1,9 +1,9 @@
 package com.codesaid_music.view.home.adapter;
 
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.core.app.Fragment;
+import androidx.core.app.FragmentManager;
+import androidx.core.app.FragmentPagerAdapter;
 
 import com.codesaid_music.view.discory.DiscoryFragment;
 import com.codesaid_music.view.friend.FriendFragment;

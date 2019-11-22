@@ -1,6 +1,6 @@
 package com.codesaid.lib_commin_ui.recyclerview.base;
 
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 
 /**
  *

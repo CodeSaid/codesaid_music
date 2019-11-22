@@ -3,7 +3,7 @@ apply plugin: 'com.alibaba.arouter'
 
 android {
     compileSdkVersion this.rootProject.android.compileSdkVersion
-    buildToolsVersion "28.0.3"
+    buildToolsVersion this.rootProject.android.buildToolsVersion
     defaultConfig {
         applicationId this.rootProject.android.applicationId
         minSdkVersion this.rootProject.android.minSdkVersion
@@ -71,4 +71,6 @@ dependencies {
     implementation project(':lib_image_loader')
     //保活库
     implementation project(':lib_pullalive')
+    //基础库
+    implementation project(':lib_base')
 }
