@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.alibaba.arouter'
 
 android {
@@ -32,35 +31,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    //占位主工程android原生库
-    compileOnly rootProject.depsLibs.appcompat
-    compileOnly rootProject.depsLibs.design
-    compileOnly rootProject.depsLibs.recyclerview
-
-    //占位主工程的greenDao类库
-    compileOnly rootProject.depsLibs.greendao
-    //占位主工程的eventbus库
-    compileOnly rootProject.depsLibs.eventbus
-    //占位主工程的rxjava库
-    compileOnly rootProject.depsLibs.rxjava
-
-
-    //占位主工程自己源码库
-    compileOnly project(':lib_image_loader')
-    compileOnly project(':lib_commin_ui')
-    compileOnly project(':lib_share')
-    //音频播放器组
-    compileOnly project(':lib_base')
+    implementation this.rootProject.depsLibs.appcompat
 
     //占位主工程arouter库
     compileOnly(rootProject.depsLibs.arouterapi) {
         exclude group: 'com.android.support'
     }
     annotationProcessor rootProject.depsLibs.aroutercompiler
-}
-
-greendao {
-    //其它配置保持默认,有需要再研究
-    schemaVersion 1 //数据库版本号
-    daoPackage 'com.codesaid.lib_audio.mediaplayer.db' //dao,master类所在包
 }

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.codesaid.lib_audio.app.AudioHelper;
+
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.codesaid.lib_base.audio.AudioService;
 import com.codesaid.video.videoplayer.core.view.CustomVideoView;
 import com.codesaid.video.videoplayer.core.view.VideoFullDialog;
 
@@ -27,10 +30,13 @@ public class VideoAdSlot implements CustomVideoView.ADVideoPlayerListener {
     /**
      * Data
      */
+    @Autowired(name = "/audio/audio_service")
+    private AudioService mAudioService;
     private String mVideoUrl;
     private SDKSlotListener mSlotListener;
 
     public VideoAdSlot(String videoUrl, SDKSlotListener slotListener) {
+        ARouter.getInstance().inject(this);
         mVideoUrl = videoUrl;
         mSlotListener = slotListener;
         mParentView = slotListener.getAdParent();
@@ -121,7 +127,7 @@ public class VideoAdSlot implements CustomVideoView.ADVideoPlayerListener {
         dialog.show();
 
         // 全屏暂停音乐播放
-        AudioHelper.pauseAudio();
+        mAudioService.pauseAudio();
     }
 
     /**
@@ -139,7 +145,7 @@ public class VideoAdSlot implements CustomVideoView.ADVideoPlayerListener {
         // 继续从全屏播放的位置 播放
         mCustomVideoView.seekAndResume(position);
         // 小屏恢复音乐播放
-        AudioHelper.resumeAudio();
+        mAudioService.resumeAudio();
     }
 
     /**

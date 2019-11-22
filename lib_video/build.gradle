@@ -33,8 +33,7 @@ dependencies {
 
     implementation this.rootProject.depsLibs.appcompat
 
-    //音频播放器组
-    implementation project(':lib_audio')
+    compileOnly project(':lib_base')
 
     //占位主工程arouter库
     compileOnly(rootProject.depsLibs.arouterapi) {
