@@ -38,13 +38,13 @@ public final class AudioHelper {
         MusicPlayerActivity.start(activity);
     }
 
-    //    public static void pauseAudio() {
-    //        AudioController.getInstance().pause();
-    //    }
-    //
-    //    public static void resumeAudio() {
-    //        AudioController.getInstance().resume();
-    //    }
+    public static void pauseAudio() {
+        AudioController.getInstance().pause();
+    }
+
+    public static void resumeAudio() {
+        AudioController.getInstance().resume();
+    }
 
     public static Context getContext() {
         return mContext;

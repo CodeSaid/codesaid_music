@@ -239,14 +239,14 @@ public class AudioController {
     /**
      * 对外提供暂停方法
      */
-    private void pause() {
+    public void pause() {
         mAudioPlayer.pause();
     }
 
     /**
      * 对外提供恢复播放方法
      */
-    private void resume() {
+    public void resume() {
         mAudioPlayer.resume();
     }
 

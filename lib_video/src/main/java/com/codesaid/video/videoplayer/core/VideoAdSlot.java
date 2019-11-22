@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.video.videoplayer.core.view.CustomVideoView;
 import com.codesaid.video.videoplayer.core.view.VideoFullDialog;
 
@@ -119,6 +120,8 @@ public class VideoAdSlot implements CustomVideoView.ADVideoPlayerListener {
         dialog.setSlotListener(mSlotListener);
         dialog.show();
 
+        // 全屏暂停音乐播放
+        AudioHelper.pauseAudio();
     }
 
     /**
@@ -135,6 +138,8 @@ public class VideoAdSlot implements CustomVideoView.ADVideoPlayerListener {
         mCustomVideoView.setListener(this);
         // 继续从全屏播放的位置 播放
         mCustomVideoView.seekAndResume(position);
+        // 小屏恢复音乐播放
+        AudioHelper.resumeAudio();
     }
 
     /**
