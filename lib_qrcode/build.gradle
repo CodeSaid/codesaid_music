@@ -29,16 +29,15 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation this.rootProject.depsLibs.appcompat
     compileOnly project(':lib_commin_ui')
-
     //arouter库
     compileOnly(rootProject.depsLibs.arouterapi) {
         exclude group: 'com.android.support'
     }
     annotationProcessor rootProject.depsLibs.aroutercompiler
+    implementation files('libs/zxing.jar')
 }
 
 repositories {
