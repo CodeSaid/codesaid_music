@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.alibaba.arouter'
 
 android {
     compileSdkVersion this.rootProject.android.compileSdkVersion
@@ -9,6 +10,13 @@ android {
         versionCode this.rootProject.android.versionCode
         versionName this.rootProject.android.versionName
         multiDexEnabled this.rootProject.android.multiDexEnabled
+
+        //ARouter配置
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
+            }
+        }
     }
 
     buildTypes {
@@ -24,4 +32,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation this.rootProject.depsLibs.appcompat
+    compileOnly project(':lib_commin_ui')
+
+    //arouter库
+    compileOnly(rootProject.depsLibs.arouterapi) {
+        exclude group: 'com.android.support'
+    }
+    annotationProcessor rootProject.depsLibs.aroutercompiler
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
