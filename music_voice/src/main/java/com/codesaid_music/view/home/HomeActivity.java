@@ -69,6 +69,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private HomePagerAdapter mHomePagerAdapter;
 
+    private View mDrawerQrCodeView;
+
     /*
      * data
      */
@@ -96,6 +98,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mSearchView.setOnClickListener(this);
 
         initMagicIndicator();
+
+
+        mDrawerQrCodeView = findViewById(R.id.home_qrcode);
 
         // 登录相关的 UI
         mUnLoginLayout = findViewById(R.id.unloggin_layout);
