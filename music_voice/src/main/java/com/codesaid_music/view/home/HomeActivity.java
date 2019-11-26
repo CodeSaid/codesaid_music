@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -69,7 +70,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private HomePagerAdapter mHomePagerAdapter;
 
+    // 相机
     private View mDrawerQrCodeView;
+
+    // 分享
+    private View mDrawerShareView;
 
     /*
      * data
@@ -101,19 +106,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
 
         mDrawerQrCodeView = findViewById(R.id.home_qrcode);
+        mDrawerQrCodeView.setOnClickListener(this);
+        mDrawerShareView = findViewById(R.id.home_music);
+        mDrawerShareView.setOnClickListener(this);
+        findViewById(R.id.online_music_view).setOnClickListener(this);
+        findViewById(R.id.check_update_view).setOnClickListener(this);
 
         // 登录相关的 UI
         mUnLoginLayout = findViewById(R.id.unloggin_layout);
         mUnLoginLayout.setOnClickListener(this);
         mPhotoView = findViewById(R.id.avatr_view);
 
-    }
-
-    private void gotoWebView(String url) {
-        ARouter.getInstance()
-                .build(Constant.Router.ROUTER_WEB_ACTIVIYT)
-                .withString("url", url)
-                .navigation();
     }
 
     /**
@@ -209,7 +212,41 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
                 break;
+            case R.id.home_qrcode:
+                if (hasPermission(Constant.HARDWEAR_CAMERA_PERMISSION)) {
+                    doCameraPermission();
+                } else {
+                    requestPermission(Constant.HARDWEAR_CAMERA_CODE, Constant.HARDWEAR_CAMERA_PERMISSION);
+                }
+                break;
+            case R.id.home_music:
+                //shareFriend();
+                goToMusic();
+                break;
+            case R.id.online_music_view:
+                //跳到指定webactivity
+                gotoWebView("https://www.codesaid.com");
+                break;
+            case R.id.check_update_view:
+                // checkUpdate();
+                break;
         }
+    }
+
+    @Override
+    public void doCameraPermission() {
+        ARouter.getInstance().build(Constant.Router.ROUTER_CAPTURE_ACTIVIYT).navigation();
+    }
+
+    private void goToMusic() {
+        ARouter.getInstance().build(Constant.Router.ROUTER_MUSIC_ACTIVIYT).navigation();
+    }
+
+    private void gotoWebView(String url) {
+        ARouter.getInstance()
+                .build(Constant.Router.ROUTER_WEB_ACTIVIYT)
+                .withString("url", url)
+                .navigation();
     }
 
     /**
@@ -221,6 +258,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mPhotoView.setVisibility(View.VISIBLE);
         ImageLoaderManager.getInstance()
                 .displayImageForCircle(mPhotoView, UserManager.getInstance().getUser().photoUrl);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //退出不销毁task中activity
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
