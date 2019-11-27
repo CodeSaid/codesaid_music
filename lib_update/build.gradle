@@ -24,4 +24,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation this.rootProject.depsLibs.appcompat
+
+    compileOnly project(':lib_network')
+    compileOnly project(':lib_commin_ui')
 }
