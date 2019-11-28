@@ -1,7 +1,10 @@
 package com.codesaid_music.view.home;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -21,11 +25,13 @@ import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_audio.mediaplayer.model.AudioBean;
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid.lib_image_loader.api.ImageLoaderManager;
+import com.codesaid.lib_update.app.UpdateHelper;
 import com.codesaid_music.R;
 import com.codesaid_music.constant.Constant;
 import com.codesaid_music.model.CHANNEL;
 import com.codesaid_music.model.login.LoginEvent;
 import com.codesaid_music.utils.UserManager;
+import com.codesaid_music.utils.Utils;
 import com.codesaid_music.view.home.adapter.HomePagerAdapter;
 import com.codesaid_music.view.login.LoginActivity;
 
@@ -81,10 +87,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      */
     private ArrayList<AudioBean> mLists = new ArrayList<>();
 
+    private UpdateReceiver mReceiver = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        registerBroadcastReceiver();
         setContentView(R.layout.activity_home_layout);
         initView();
         initData();
@@ -228,7 +237,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 gotoWebView("https://www.codesaid.com");
                 break;
             case R.id.check_update_view:
-                // checkUpdate();
+                checkUpdate();
                 break;
         }
     }
@@ -247,6 +256,40 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 .build(Constant.Router.ROUTER_WEB_ACTIVIYT)
                 .withString("url", url)
                 .navigation();
+    }
+
+    private void checkUpdate() {
+        UpdateHelper.checkUpdate(this);
+    }
+
+    private void registerBroadcastReceiver() {
+        if (mReceiver == null) {
+            mReceiver = new UpdateReceiver();
+            LocalBroadcastManager
+                    .getInstance(this)
+                    .registerReceiver(mReceiver, new IntentFilter(UpdateHelper.UPDATE_ACTION));
+        }
+    }
+
+    private void unRegisterBroadcastReceiver() {
+        if (mReceiver != null) {
+            LocalBroadcastManager
+                    .getInstance(this)
+                    .unregisterReceiver(mReceiver);
+        }
+    }
+
+    /**
+     * 接收Update发送的广播
+     */
+    public class UpdateReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            context.startActivity(Utils
+                    .getInstallApkIntent(context,
+                            intent.getStringExtra(UpdateHelper.UPDATE_FILE_KEY)));
+        }
     }
 
     /**
@@ -274,5 +317,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        unRegisterBroadcastReceiver();
     }
 }
