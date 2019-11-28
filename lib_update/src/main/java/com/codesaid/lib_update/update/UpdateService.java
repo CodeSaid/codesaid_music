@@ -15,8 +15,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.codesaid.lib_update.R;
+import com.codesaid.lib_update.app.UpdateHelper;
 
 import java.io.File;
+
+import static com.codesaid.lib_update.app.UpdateHelper.UPDATE_FILE_KEY;
 
 /**
  * Created By codesaid

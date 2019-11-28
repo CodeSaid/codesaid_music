@@ -7,7 +7,7 @@ package com.codesaid.lib_update.update.constant;
  */
 public class Constants {
 
-    private static final String ROOT_URL = "http://imooc.com/api";
+    public static final String ROOT_URL = "http://codesaid.com/api";
 
-    private static String CHECK_UPDATE = ROOT_URL + "/config/check_update.php";
+    public static String CHECK_UPDATE = ROOT_URL + "/config/check_update.json";
 }

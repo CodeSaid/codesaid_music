@@ -27,4 +27,7 @@ dependencies {
 
     compileOnly project(':lib_network')
     compileOnly project(':lib_commin_ui')
+
+    // okhttp 依赖
+    implementation this.rootProject.depsLibs.okhttp
 }
