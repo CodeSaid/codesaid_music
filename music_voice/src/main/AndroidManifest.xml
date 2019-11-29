@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".view.home.HomeActivity">
+        <activity android:name=".view.loading.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -21,5 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.login.LoginActivity" />
+
+        <activity
+            android:name=".view.home.HomeActivity"
+            android:launchMode="singleTask">
+        </activity>
     </application>
 </manifest>
