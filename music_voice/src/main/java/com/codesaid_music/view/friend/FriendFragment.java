@@ -18,8 +18,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.codesaid.lib_commin_ui.recyclerview.wrapper.LoadMoreWrapper;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
+import com.codesaid.lib_network.okhttp.utils.ResponseEntityToModule;
+
 import com.codesaid_music.R;
+import com.codesaid_music.api.MockData;
 import com.codesaid_music.api.RequestCenter;
+import com.codesaid_music.model.friend.BaseFriendModel;
 import com.codesaid_music.model.friend.FriendBodyValue;
 import com.codesaid_music.model.friend.FriendModel;
 import com.codesaid_music.view.friend.adapter.FriendRecyclerAdapter;
@@ -71,6 +75,7 @@ public class FriendFragment extends Fragment
         mContext = getActivity();
     }
 
+    @SuppressLint("InflateParams")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -118,8 +123,8 @@ public class FriendFragment extends Fragment
             @Override
             public void onFailure(Object reasonObj) {
                 //显示请求失败View,显示mock数据
-                //                onSuccess(
-                //                        ResponseEntityToModule.parseJsonToModule(MockData.FRIEND_DATA, BaseFriendModel.class));
+                onSuccess(
+                        ResponseEntityToModule.parseJsonToModule(MockData.FRIEND_DATA, BaseFriendModel.class));
             }
         });
     }
@@ -137,8 +142,8 @@ public class FriendFragment extends Fragment
             @Override
             public void onFailure(Object reasonObj) {
                 //显示请求失败View,显示mock数据
-                //                onSuccess(ResponseEntityToModule.parseJsonToModule(MockData.FRIEND_DATA,
-                //                        BaseFriendModel.class));
+                onSuccess(ResponseEntityToModule.parseJsonToModule(MockData.FRIEND_DATA,
+                        BaseFriendModel.class));
             }
         });
     }

@@ -3,8 +3,9 @@ package com.codesaid_music.view.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import com.codesaid.lib_commin_ui.base.BaseActivity;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
