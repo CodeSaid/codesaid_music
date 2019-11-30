@@ -52,12 +52,12 @@ public class RequestCenter {
 
     //    public static void requestRecommandData(DisposeDataListener listener) {
     //        RequestCenter.getRequest(HttpConstants.HOME_RECOMMAND, null, listener,
-    //                BaseRecommandModel.class);
+    //                BaseRecommendModel.class);
     //    }
 
     //    public static void requestRecommandMore(DisposeDataListener listener) {
     //        RequestCenter.getRequest(HttpConstants.HOME_RECOMMAND_MORE, null, listener,
-    //                BaseRecommandMoreModel.class);
+    //                BaseRecommendMoreModel.class);
     //    }
 
     //    public static void requestFriendData(DisposeDataListener listener) {
