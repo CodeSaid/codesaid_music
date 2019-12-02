@@ -3,6 +3,8 @@ package com.codesaid_music.api;
 import com.codesaid.lib_network.CommonOkHttpClient;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataHandle;
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
+import com.codesaid_music.model.discory.BaseRecommendModel;
+import com.codesaid_music.model.discory.BaseRecommendMoreModel;
 import com.codesaid_music.model.friend.FriendModel;
 import com.codesaid_music.model.user.User;
 
@@ -16,9 +18,16 @@ import okhttp3.Request;
  */
 public class RequestCenter {
 
-    public static String LOGIN = "http://132.232.72.120:8080/music/login.json";
+    private static final String ROOT_URL = "http://132.232.72.120:8080";
 
-    public static String FRIEND = "http://132.232.72.120:8080/music/friend.json";
+    private static String LOGIN = ROOT_URL + "/music/login.json";
+
+    private static String FRIEND = ROOT_URL + "/music/friend.json";
+
+    private static String HOME_RECOMMAND = ROOT_URL + "/music/recommand.json";
+
+    private static String HOME_RECOMMAND_MORE = ROOT_URL + "/music/recommand_more.json";
+
 
     static class HttpConstants {
         //        private static final String ROOT_URL = "http://imooc.com/api";
@@ -50,20 +59,6 @@ public class RequestCenter {
         CommonOkHttpClient.get(request, new DisposeDataHandle(listener, clazz));
     }
 
-    //    public static void requestRecommandData(DisposeDataListener listener) {
-    //        RequestCenter.getRequest(HttpConstants.HOME_RECOMMAND, null, listener,
-    //                BaseRecommendModel.class);
-    //    }
-
-    //    public static void requestRecommandMore(DisposeDataListener listener) {
-    //        RequestCenter.getRequest(HttpConstants.HOME_RECOMMAND_MORE, null, listener,
-    //                BaseRecommendMoreModel.class);
-    //    }
-
-    //    public static void requestFriendData(DisposeDataListener listener) {
-    //        RequestCenter.getRequest(HttpConstants.HOME_FRIEND, null, listener, BaseFriendModel.class);
-    //    }
-
     /**
      * 用户登陆请求
      */
@@ -78,5 +73,23 @@ public class RequestCenter {
      */
     public static void getFriendData(DisposeDataListener listener) {
         RequestCenter.getRequest(FRIEND, listener, FriendModel.class);
+    }
+
+    /**
+     * 获取首页 Fragment 发现页面数据
+     *
+     * @param listener listener
+     */
+    public static void getRecommendData(DisposeDataListener listener) {
+        RequestCenter.getRequest(HOME_RECOMMAND, listener, BaseRecommendModel.class);
+    }
+
+    /**
+     * 获取首页 Fragment 发现页面   加载更多    数据
+     *
+     * @param listener listener
+     */
+    public static void getRecommendMoreData(DisposeDataListener listener) {
+        RequestCenter.getRequest(HOME_RECOMMAND_MORE, listener, BaseRecommendMoreModel.class);
     }
 }
