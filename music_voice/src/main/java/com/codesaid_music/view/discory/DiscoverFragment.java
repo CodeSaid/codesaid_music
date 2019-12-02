@@ -168,6 +168,18 @@ public class DiscoverFragment extends Fragment
         DiscoverBannerView bannerView = new DiscoverBannerView(mContext, mRecommandData.data.head);
         mHeaderWrapper.addHeaderView(bannerView);
 
+        DiscoverFunctionView functionView = new DiscoverFunctionView(mContext);
+        mHeaderWrapper.addHeaderView(functionView);
+        DiscoverRecommendView recommendView = new DiscoverRecommendView(mContext, mRecommandData.data.head);
+        mHeaderWrapper.addHeaderView(recommendView);
+        DiscoverNewView newView = new DiscoverNewView(mContext, mRecommandData.data.head);
+        mHeaderWrapper.addHeaderView(newView);
+
+        // 加载更多初始化
+        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderWrapper);
+        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
+        mLoadMoreWrapper.setOnLoadMoreListener(this);
+        mRecyclerView.setAdapter(mLoadMoreWrapper);
     }
 
     @Override

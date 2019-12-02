@@ -36,14 +36,14 @@ public class DiscoverRecommendView extends RelativeLayout {
      */
     private RecommendHeadValue mHeaderValue;
 
-    public DiscoverRecommendView(Context context, RecommendHeadValue recommandHeadValue) {
-        this(context, null, recommandHeadValue);
+    public DiscoverRecommendView(Context context, RecommendHeadValue recommendHeadValue) {
+        this(context, null, recommendHeadValue);
     }
 
-    public DiscoverRecommendView(Context context, AttributeSet attrs, RecommendHeadValue recommandHeadValue) {
+    public DiscoverRecommendView(Context context, AttributeSet attrs, RecommendHeadValue recommendHeadValue) {
         super(context, attrs);
         mContext = context;
-        mHeaderValue = recommandHeadValue;
+        mHeaderValue = recommendHeadValue;
         initView();
     }
 

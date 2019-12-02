@@ -24,9 +24,9 @@ public class RequestCenter {
 
     private static String FRIEND = ROOT_URL + "/music/friend.json";
 
-    private static String HOME_RECOMMAND = ROOT_URL + "/music/recommand.json";
+    private static String HOME_RECOMMEND = ROOT_URL + "/music/recommand.json";
 
-    private static String HOME_RECOMMAND_MORE = ROOT_URL + "/music/recommand_more.json";
+    private static String HOME_RECOMMEND_MORE = ROOT_URL + "/music/recommand_more.json";
 
 
     static class HttpConstants {
@@ -81,7 +81,7 @@ public class RequestCenter {
      * @param listener listener
      */
     public static void getRecommendData(DisposeDataListener listener) {
-        RequestCenter.getRequest(HOME_RECOMMAND, listener, BaseRecommendModel.class);
+        RequestCenter.getRequest(HOME_RECOMMEND, listener, BaseRecommendModel.class);
     }
 
     /**
@@ -90,6 +90,6 @@ public class RequestCenter {
      * @param listener listener
      */
     public static void getRecommendMoreData(DisposeDataListener listener) {
-        RequestCenter.getRequest(HOME_RECOMMAND_MORE, listener, BaseRecommendMoreModel.class);
+        RequestCenter.getRequest(HOME_RECOMMEND_MORE, listener, BaseRecommendMoreModel.class);
     }
 }
