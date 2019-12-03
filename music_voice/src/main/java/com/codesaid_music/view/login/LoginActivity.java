@@ -14,6 +14,8 @@ import com.codesaid_music.api.RequestCenter;
 import com.codesaid_music.model.login.LoginEvent;
 import com.codesaid_music.model.user.User;
 import com.codesaid_music.utils.UserManager;
+import com.codesaid_music.view.login.inter.IUserLoginView;
+import com.codesaid_music.view.login.presenter.UserLoginPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +25,9 @@ import org.greenrobot.eventbus.EventBus;
  * Package Name: com.codesaid_music.view.login
  * desc: 登录页面
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements IUserLoginView {
+
+    private UserLoginPresenter mUserLoginPresenter;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -35,25 +39,44 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
 
+        //初始化P层
+        mUserLoginPresenter = new UserLoginPresenter(this);
+
         findViewById(R.id.login_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestCenter.login(new DisposeDataListener() {
-                    @Override
-                    public void onSuccess(Object responseObj) {
-                        // 登录成功
-                        User user = (User) responseObj;
-                        UserManager.getInstance().setUser(user);
-                        EventBus.getDefault().post(new LoginEvent());
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(Object reasonObj) {
-
-                    }
-                });
+                mUserLoginPresenter.login(getUserName(), getPassword());
             }
         });
+    }
+
+    @Override
+    public String getUserName() {
+        return "17871211558";
+    }
+
+    @Override
+    public String getPassword() {
+        return "123456";
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    @Override
+    public void showLoginFailedView() {
+        //登陆失败处理
+    }
+
+    @Override
+    public void showLoadingView() {
+        //显示加载中UI
+    }
+
+    @Override
+    public void hideLoadingView() {
+        //隐藏加载布局
     }
 }
