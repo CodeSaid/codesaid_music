@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.codesaid_music.view.VideoFragment;
 import com.codesaid_music.view.discory.DiscoverFragment;
 import com.codesaid_music.view.friend.FriendFragment;
 import com.codesaid_music.view.mine.MineFragment;
@@ -35,8 +36,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
                 return DiscoverFragment.newInstance();
             case CHANNEL.FRIEND_ID:
                 return FriendFragment.newInstance();
-            //            case CHANNEL.VIDEO_ID:
-            //                return VideoFragment.newInstance();
+            case CHANNEL.VIDEO_ID:
+                return VideoFragment.newInstance();
         }
         return null;
     }
