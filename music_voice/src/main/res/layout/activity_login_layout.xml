@@ -23,9 +23,11 @@
             android:layout_height="70dp"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/xncker" />
 
     </RelativeLayout>
+
+
 
     <TextView
         android:id="@+id/login_view"
