@@ -14,4 +14,5 @@ public class User extends BaseModel {
     public String tick;
     public String mobile;
     public String platform;
+    public String password;
 }

@@ -1,8 +1,11 @@
 package com.codesaid_music.view.login.presenter;
 
+import android.widget.Toast;
+
 import com.codesaid.lib_network.okhttp.listener.DisposeDataListener;
 import com.codesaid_music.api.MockData;
 import com.codesaid_music.api.RequestCenter;
+import com.codesaid_music.application.MusicVoiceApplication;
 import com.codesaid_music.model.login.LoginEvent;
 import com.codesaid_music.model.user.User;
 import com.codesaid_music.utils.UserManager;
@@ -22,6 +25,9 @@ public class UserLoginPresenter implements IUserLoginPresenter, DisposeDataListe
 
     private IUserLoginView mIView;
 
+    private String email;
+    private String password;
+
     public UserLoginPresenter(IUserLoginView iView) {
         mIView = iView;
     }
@@ -30,10 +36,16 @@ public class UserLoginPresenter implements IUserLoginPresenter, DisposeDataListe
     public void onSuccess(Object responseObj) {
         mIView.hideLoadingView();
         User user = (User) responseObj;
-        UserManager.getInstance().setUser(user);
-        // 发送 登录 Event
-        EventBus.getDefault().post(new LoginEvent());
-        mIView.finishActivity();
+        // 判断用户输入的账号密码是否正确
+        if (email.equals(user.mobile) && password.equals(user.password)) {
+            UserManager.getInstance().setUser(user);
+            // 发送 登录 Event
+            EventBus.getDefault().post(new LoginEvent());
+            mIView.finishActivity();
+        } else {
+            Toast.makeText(MusicVoiceApplication.getInstance(),
+                    "您的账号或者密码有误!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -44,8 +56,10 @@ public class UserLoginPresenter implements IUserLoginPresenter, DisposeDataListe
     }
 
     @Override
-    public void login(String username, String password) {
+    public void login(String email, String password) {
         mIView.showLoadingView();
+        this.email = email;
+        this.password = password;
         RequestCenter.login(this);
     }
 }
