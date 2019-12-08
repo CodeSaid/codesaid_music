@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.alibaba.arouter'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion this.rootProject.android.compileSdkVersion
@@ -48,6 +49,8 @@ dependencies {
     // fastjson
     implementation this.rootProject.depsLibs.fastjson
     implementation this.rootProject.depsLibs.fastjsonandroid
+
+    implementation this.rootProject.depsLibs.greendaoversion
 
     //arouter库
     implementation(rootProject.depsLibs.arouterapi) {

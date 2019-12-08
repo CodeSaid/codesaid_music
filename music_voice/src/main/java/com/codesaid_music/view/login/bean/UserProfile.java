@@ -1,6 +1,8 @@
 package com.codesaid_music.view.login.bean;
 
+import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created By codesaid
@@ -8,7 +10,9 @@ import org.greenrobot.greendao.annotation.Generated;
  * Package Name: com.codesaid_music.view.login.bean
  * desc : User
  */
+@Entity(nameInDb = "user_profile")
 public class UserProfile {
+    @Id
     private long userId = 0;
 
     private String name = null;
