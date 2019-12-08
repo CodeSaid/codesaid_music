@@ -45,6 +45,10 @@ dependencies {
     implementation this.rootProject.depsLibs.rxjava
     implementation this.rootProject.depsLibs.rxandroid
 
+    // fastjson
+    implementation this.rootProject.depsLibs.fastjson
+    implementation this.rootProject.depsLibs.fastjsonandroid
+
     //arouter库
     implementation(rootProject.depsLibs.arouterapi) {
         exclude group: 'com.android.support'

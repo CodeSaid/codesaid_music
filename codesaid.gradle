@@ -24,7 +24,9 @@ ext {
             recyclerview   : '1.0.0',
             greendao       : '3.2.2',
             arouterapi     : '1.5.0',
-            aroutercompiler: '1.2.2'
+            aroutercompiler: '1.2.2',
+            fastjson       : '1.2.61',
+            fastjsonandroid: '1.1.71.android'
     ]
 
     depsLibs = [
@@ -41,6 +43,8 @@ ext {
             recyclerview   : "androidx.recyclerview:recyclerview:${depsVersion.recyclerview}",
             greendao       : "org.greenrobot:greendao:${depsVersion.greendao}",
             arouterapi     : "com.alibaba:arouter-api:${depsVersion.arouterapi}",
-            aroutercompiler: "com.alibaba:arouter-compiler:${depsVersion.aroutercompiler}"
+            aroutercompiler: "com.alibaba:arouter-compiler:${depsVersion.aroutercompiler}",
+            fastjson       : "com.alibaba:fastjson:${depsVersion.fastjson}",
+            fastjsonandroid: "com.alibaba:fastjson:${depsVersion.fastjsonandroid}"
     ]
 }

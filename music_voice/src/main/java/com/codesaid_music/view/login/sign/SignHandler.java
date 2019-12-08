@@ -2,7 +2,9 @@ package com.codesaid_music.view.login.sign;
 
 import android.accounts.AccountManager;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.codesaid_music.view.login.bean.UserProfile;
 
 /**
  * Created By codesaid
