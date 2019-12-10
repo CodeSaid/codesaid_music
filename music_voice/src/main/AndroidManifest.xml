@@ -26,5 +26,6 @@
             android:name=".view.home.HomeActivity"
             android:launchMode="singleTask">
         </activity>
+        <activity android:name=".view.login.RegisterActivity" />
     </application>
 </manifest>

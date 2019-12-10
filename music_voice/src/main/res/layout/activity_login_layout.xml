@@ -66,6 +66,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/login_view"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:text="还没有账号?点击立即注册" />
+
+    <TextView
         android:id="@+id/login_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
