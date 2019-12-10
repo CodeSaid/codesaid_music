@@ -1,9 +1,10 @@
 package com.codesaid_music.view.login.sign;
 
-import android.accounts.AccountManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.codesaid_music.application.AccountManager;
+import com.codesaid_music.database.DatabaseManager;
 import com.codesaid_music.view.login.bean.UserProfile;
 
 /**
