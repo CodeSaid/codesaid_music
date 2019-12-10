@@ -7,6 +7,7 @@ import com.codesaid.lib_audio.app.AudioHelper;
 import com.codesaid.lib_share.ShareManager;
 import com.codesaid.lib_update.app.UpdateHelper;
 import com.codesaid.video.app.VideoHelper;
+import com.codesaid_music.database.DatabaseManager;
 
 public class MusicVoiceApplication extends Application {
 
@@ -26,6 +27,8 @@ public class MusicVoiceApplication extends Application {
         UpdateHelper.init(this);
         //ARouter初始化
         ARouter.init(this);
+        // greenDao 初始化
+        DatabaseManager.getInstance().init(this);
     }
 
     public static MusicVoiceApplication getInstance() {
