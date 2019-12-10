@@ -11,6 +11,8 @@ import com.codesaid_music.model.user.User;
 import com.codesaid_music.utils.UserManager;
 import com.codesaid_music.view.login.inter.IUserLoginPresenter;
 import com.codesaid_music.view.login.inter.IUserLoginView;
+import com.codesaid_music.view.login.sign.ISignListener;
+import com.codesaid_music.view.login.sign.SignHandler;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,6 +43,18 @@ public class UserLoginPresenter implements IUserLoginPresenter, DisposeDataListe
             UserManager.getInstance().setUser(user);
             // 发送 登录 Event
             EventBus.getDefault().post(new LoginEvent());
+            // 把数据存储到数据库中
+            SignHandler.onSignUp((String) responseObj, new ISignListener() {
+                @Override
+                public void onSignInSuccess() {
+
+                }
+
+                @Override
+                public void onSignUpSuccess() {
+
+                }
+            });
             mIView.finishActivity();
         } else {
             Toast.makeText(MusicVoiceApplication.getInstance(),
