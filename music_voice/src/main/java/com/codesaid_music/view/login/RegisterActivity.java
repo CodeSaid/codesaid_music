@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -124,12 +125,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     RequestCenter.postUserRegister(formBody, new DisposeDataListener() {
                         @Override
                         public void onSuccess(Object responseObj) {
+                            Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onFailure(Object reasonObj) {
-
+                            Toast.makeText(RegisterActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
