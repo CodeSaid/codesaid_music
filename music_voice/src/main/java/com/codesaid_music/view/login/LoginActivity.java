@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.codesaid.lib_commin_ui.base.BaseActivity;
+import com.codesaid.lib_commin_ui.circle_image_view.CircleImageView;
 import com.codesaid_music.R;
 import com.codesaid_music.view.login.inter.IUserLoginView;
 import com.codesaid_music.view.login.presenter.UserLoginPresenter;
@@ -33,6 +34,8 @@ public class LoginActivity extends BaseActivity implements IUserLoginView, View.
     private TextView mTvRegister;
     private TextView mLoginView;
 
+    private CircleImageView mImgWweChatIcon;
+
 
     public static void start(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -47,6 +50,8 @@ public class LoginActivity extends BaseActivity implements IUserLoginView, View.
         mEmail = findViewById(R.id.edit_sign_in_password);
         mTvRegister = findViewById(R.id.tv_register);
         mLoginView = findViewById(R.id.login_view);
+        mImgWweChatIcon = findViewById(R.id.img_wechat);
+        mImgWweChatIcon.setOnClickListener(this);
 
         mTvRegister.setOnClickListener(this);
         mLoginView.setOnClickListener(this);
@@ -124,6 +129,9 @@ public class LoginActivity extends BaseActivity implements IUserLoginView, View.
                 if (checkForm()) {
                     mUserLoginPresenter.login(email, password);
                 }
+                break;
+            case R.id.img_wechat: // 微信快捷登录按钮
+                // TODO 未实现
                 break;
         }
     }
