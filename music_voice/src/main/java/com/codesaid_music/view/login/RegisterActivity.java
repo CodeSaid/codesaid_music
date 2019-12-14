@@ -132,7 +132,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                         @Override
                         public void onFailure(Object reasonObj) {
-                            Toast.makeText(RegisterActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "注册失败,请重试", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
