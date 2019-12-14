@@ -90,7 +90,18 @@
         android:textColor="@android:color/holo_red_light"
         android:textSize="15sp" />
 
+    <com.codesaid.lib_commin_ui.circle_image_view.CircleImageView
+        android:id="@+id/img_wechat"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/tv_desc"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:src="@mipmap/xncker" />
+
     <TextView
+        android:id="@+id/tv_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
